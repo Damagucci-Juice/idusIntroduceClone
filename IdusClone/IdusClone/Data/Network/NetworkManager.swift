@@ -16,7 +16,7 @@ enum NetworkError: Error {
 final class NetworkManager {
     func fetchData(_ id: String, completionHandler: @escaping (Result<[ResultDTO], NetworkError>) -> Void)  {
         guard let url = URL(string: "http://itunes.apple.com/lookup?id=\(id)") else {
-            fatalError("Invalid URL")
+            return completionHandler(.failure(.badURL))
         }
         var urlRequest = URLRequest(url: url)
         urlRequest.httpMethod = "GET"

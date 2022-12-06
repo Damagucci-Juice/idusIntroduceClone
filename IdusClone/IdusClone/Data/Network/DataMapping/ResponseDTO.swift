@@ -25,25 +25,25 @@ struct ResultDTO: Codable {
     let price: Double
     let resultDescription: String
     let releaseDate: Date
-        let bundleID, currency: String
-        let trackID: Int
-        let trackName, primaryGenreName: String
-        let primaryGenreID: Int
-        let isVppDeviceBasedLicensingEnabled: Bool
-        let sellerName: String
-        let genreIDS: [String]
-        let currentVersionReleaseDate: Date
-        let contentAdvisoryRating, minimumOSVersion, trackCensoredName: String
-        let languageCodesISO2A: [String]
-        let fileSizeBytes: String
-        let sellerURL: String
-        let formattedPrice: String
-        let averageUserRatingForCurrentVersion: Double
-        let userRatingCountForCurrentVersion: Int
-        let averageUserRating: Double
-        let trackViewURL: String
-        let trackContentRating, version, wrapperType: String
-        let userRatingCount: Int
+    let bundleID, currency: String
+    let trackID: Int
+    let trackName, primaryGenreName: String
+    let primaryGenreID: Int
+    let isVppDeviceBasedLicensingEnabled: Bool
+    let sellerName: String
+    let genreIDS: [String]
+    let currentVersionReleaseDate: Date
+    let contentAdvisoryRating, minimumOSVersion, trackCensoredName: String
+    let languageCodesISO2A: [String]
+    let fileSizeBytes: String
+    let sellerURL: String
+    let formattedPrice: String
+    let averageUserRatingForCurrentVersion: Double
+    let userRatingCountForCurrentVersion: Int
+    let averageUserRating: Double
+    let trackViewURL: String
+    let trackContentRating, version, wrapperType: String
+    let userRatingCount: Int
     
     private enum CodingKeys: String, CodingKey {
         case isGameCenterEnabled, supportedDevices,  screenshotUrls, artworkUrl60, artworkUrl512, artworkUrl100
@@ -68,5 +68,37 @@ struct ResultDTO: Codable {
                 case formattedPrice, averageUserRatingForCurrentVersion, userRatingCountForCurrentVersion, averageUserRating
                 case trackViewURL = "trackViewUrl"
                 case trackContentRating, version, wrapperType, userRatingCount
+    }
+}
+
+extension ResultDTO {
+    func toDomain() -> AppIntroduction {
+        return .init(id: trackID,
+                     appName: trackName,
+                     sellerName: sellerName,
+                     isGameCenterEnabled: isGameCenterEnabled,
+                     screenshotURLs: screenshotUrls.compactMap { URL(string: $0) },
+                     artworkULR60: URL(string: artworkUrl60)!,
+                     artworkULR512: URL(string: artworkUrl512)!,
+                     artworkULR100: URL(string: artworkUrl100)!,
+                     releaseNotes: releaseNotes,
+                     artistID: artistID,
+                     artistName: artistName,
+                     genres: genres,
+                     price: price,
+                     resultDescription: resultDescription,
+                     primaryGenreName: primaryGenreName,
+                     primaryGenreID: primaryGenreID,
+                     currentVersionReleaseDate: currentVersionReleaseDate,
+                     contentAdvisoryRating: contentAdvisoryRating,
+                     trackContentRating: trackContentRating,
+                     minimumOSVersion: minimumOSVersion,
+                     languageCodes: languageCodesISO2A,
+                     fileSizeBytes: fileSizeBytes,
+                     sellerURL: URL(string: sellerURL)!,
+                     formattedPrice: formattedPrice,
+                     averagedUserRating: averageUserRating,
+                     userRatingCount: userRatingCount,
+                     version: version)
     }
 }
