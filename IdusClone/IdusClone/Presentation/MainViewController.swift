@@ -7,11 +7,11 @@
 
 import UIKit
 
-class MainViewController: UIViewController {
+final class MainViewController: UIViewController {
     
     private let searchBar: UISearchBar = {
         let searchBar = UISearchBar()
-        let appCode = (Bundle.main.object(forInfoDictionaryKey: "AppCode") as? String) ?? ""
+        let appCode = (Bundle.main.object(forInfoDictionaryKey: "AppCode") as? String) ?? "앱코드"
         searchBar.placeholder = "\(appCode)를 입력해주세요"
         return searchBar
     }()
