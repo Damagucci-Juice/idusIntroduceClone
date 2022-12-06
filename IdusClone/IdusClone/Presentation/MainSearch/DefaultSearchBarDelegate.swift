@@ -37,7 +37,8 @@ final class DefaultSearchBarDelegate: NSObject, UISearchBarDelegate {
         else { return }
         Task {
             guard let results = try await self.viewController?.networkManager.fetchData(searchText) else { return }
-            print(results.count)
+            viewController?.navigationItem.backButtonTitle = "Search"
+            viewController?.navigationController?.pushViewController(AppDetailViewController(results[0].toDomain()), animated: false)
         }
     }
 }
