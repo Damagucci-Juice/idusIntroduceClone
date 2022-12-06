@@ -11,8 +11,12 @@ class ViewController: UIViewController {
 
     override func viewDidLoad() {
         super.viewDidLoad()
-        // Do any additional setup after loading the view.
         view.backgroundColor = .red
+        let manager = NetworkManager()
+        Task {
+            let results = try await manager.fetchData("872469884")
+            print(results.count)
+        }
     }
 }
 
