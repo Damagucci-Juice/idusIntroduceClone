@@ -34,7 +34,16 @@ final class DefaultSearchBarDelegate: NSObject, UISearchBarDelegate {
         guard let searchText = searchBar.text,
               let appCode = Bundle.main.object(forInfoDictionaryKey: "AppCode") as? String,
               searchText == appCode
-        else { return }
+        else {
+            let alert = UIAlertController(title: "다시 입력해주세요.", message: "872469884", preferredStyle: .alert)
+            alert.addAction(UIAlertAction(title: "Fill", style: .default, handler: { _ in
+                let appCode = Bundle.main.object(forInfoDictionaryKey: "AppCode") as? String
+                searchBar.text = appCode ?? ""
+            }))
+            alert.addAction(UIAlertAction(title: "OK", style: .cancel))
+            viewController?.present(alert, animated: false)
+            return
+        }
         Task {
             guard let results = try await self.viewController?.networkManager.fetchData(searchText) else { return }
             viewController?.navigationItem.backButtonTitle = "Search"
