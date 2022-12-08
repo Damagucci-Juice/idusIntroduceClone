@@ -31,14 +31,13 @@ final class RatingReviewView: UIView {
     private let startStackView = UIStackView().then { stackView in
         stackView.axis = .vertical
         stackView.distribution = .equalSpacing
-        stackView.spacing = 2
+        stackView.spacing = Const.miniSpacing
     }
     
     private let progressStackView = UIStackView().then { stackView in
         stackView.axis = .vertical
-        stackView.alignment = .center
-        stackView.distribution = .equalSpacing
-        stackView.spacing = 2
+        stackView.distribution = .fillEqually
+        stackView.spacing = 4
     }
     
     init(appDetail: AppIntroduction) {
@@ -47,6 +46,7 @@ final class RatingReviewView: UIView {
         setupLayout()
         setupAttribute()
         setupStarStackView()
+        setupProgressBar()
     }
     
     @available(*, unavailable)
@@ -58,7 +58,7 @@ final class RatingReviewView: UIView {
 extension RatingReviewView {
     
     private func setupLayout() {
-        self.addSubviews([title, amount, totalAmount, startStackView])
+        self.addSubviews([title, amount, totalAmount, startStackView, progressStackView])
         
         title.snp.makeConstraints { make in
             make.leading.top.equalToSuperview().offset(Const.largeSpacing)
@@ -77,7 +77,12 @@ extension RatingReviewView {
         startStackView.snp.makeConstraints { make in
             make.centerY.equalTo(amount)
             make.leading.equalTo(amount.snp.trailing).offset(Const.largeSpacing)
-            
+        }
+        
+        progressStackView.snp.makeConstraints { make in
+            make.height.centerY.equalTo(startStackView)
+            make.leading.equalTo(startStackView.snp.trailing)
+            make.width.equalTo(160)
         }
     }
     
@@ -102,11 +107,19 @@ extension RatingReviewView {
                 imageView.contentMode = .scaleToFill
                 let imgString = j > i ? "star.fill" : "star"
                 let imgColor: UIColor = j > i ? .gray : .white
-                let image = UIImage(systemName: imgString)?.tinted(with: imgColor)?.resized(to: CGSize(width: 8, height: 8))
+                let image = UIImage(systemName: imgString)?.tinted(with: imgColor)?.resized(to: CGSize(width: 10, height: 10))
                 imageView.image = image
                 stackView.addArrangedSubview(imageView)
             }
             startStackView.addArrangedSubview(stackView)
+        }
+    }
+    
+    private func setupProgressBar() {
+        let array: [Double] = [0.85, 0.4, 0.2, 0.1, 0.1]
+        array.forEach { rating in
+            let bar = ProgressBarView(progressRating: rating)
+            progressStackView.addArrangedSubview(bar)
         }
     }
 }

@@ -9,6 +9,7 @@ import Foundation
 
 struct Const {
     static let miniSpacing: CGFloat = 4
+    static let smallMediumSpacing: CGFloat = 6
     static let smallSpacing: CGFloat = 8
     static let mediumSpacing: CGFloat = 12
     static let largeSpacing: CGFloat = 16
