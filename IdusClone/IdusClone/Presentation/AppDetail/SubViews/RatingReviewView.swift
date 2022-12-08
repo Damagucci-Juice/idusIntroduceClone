@@ -13,12 +13,12 @@ final class RatingReviewView: UIView {
     
     private let title = UILabel().then { label in
         label.text = "Ratings & Reviews"
-        label.font = .smallTitle
+        label.font = .mediumTitle
         label.textColor = .label
     }
     
     private let amount = UILabel().then { label in
-        label.font = .roundedNumber
+        label.font = .bigRoundedNumber
         label.textColor = .darkGray
     }
     
@@ -28,9 +28,25 @@ final class RatingReviewView: UIView {
         label.text = "out of 5"
     }
     
+    private let startStackView = UIStackView().then { stackView in
+        stackView.alignment = .trailing
+        stackView.axis = .vertical
+        stackView.distribution = .equalSpacing
+        stackView.spacing = 2
+    }
+    
+    private let progressStackView = UIStackView().then { stackView in
+        stackView.axis = .vertical
+        stackView.alignment = .center
+        stackView.distribution = .equalSpacing
+        stackView.spacing = 2
+    }
+    
     init(appDetail: AppIntroduction) {
         self.appDetail = appDetail
         super.init(frame: CGRect(x: 0, y: 0, width: .zero, height: .zero))
+        setupLayout()
+        setupAttribute()
     }
     
     @available(*, unavailable)
@@ -40,11 +56,26 @@ final class RatingReviewView: UIView {
 }
 
 extension RatingReviewView {
+    
     private func setupLayout() {
+        self.addSubviews([title, amount, totalAmount])
         
+        title.snp.makeConstraints { make in
+            make.leading.top.equalToSuperview().offset(Const.largeSpacing)
+        }
+        
+        amount.snp.makeConstraints { make in
+            make.leading.equalTo(title)
+            make.top.equalTo(title.snp.bottom)
+        }
+        
+        totalAmount.snp.makeConstraints { make in
+            make.centerX.equalTo(amount)
+            make.top.equalTo(amount.snp.bottom).inset(Const.smallSpacing)
+        }
     }
     
     private func setupAttribute() {
-        amount.text = appDetail.trackContentRating
+        amount.text = "\(appDetail.averagedUserRating.roundUnder1())"
     }
 }
