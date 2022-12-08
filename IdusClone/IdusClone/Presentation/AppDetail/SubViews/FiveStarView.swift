@@ -8,7 +8,7 @@ import SnapKit
 import UIKit
 import Then
 
-final class StarView: UIView {
+final class FiveStarView: UIView {
     
     private let highLightedImage = UIImage(systemName: "star.fill")
     private let defaultImage = UIImage(systemName: "star")
@@ -28,9 +28,8 @@ final class StarView: UIView {
     init(ratingAmount: Double, isContinues: Bool = false) {
         self.ratingAmount = ratingAmount
         self.isContinues = isContinues
-        super.init(frame: CGRect(x: 0, y: 0, width: 100, height: 100))
-        isContinues ? setupContinuesLayout()  : setupUncontinuesLayout()
-        
+        super.init(frame: CGRect(x: 0, y: 0, width: .max, height: .max))
+        setupLayout()
         self.addSubview(stackView)
         stackView.snp.makeConstraints { make in
             make.edges.equalToSuperview()
@@ -42,16 +41,15 @@ final class StarView: UIView {
         fatalError("init(coder:) has not been implemented")
     }
     
-    func setupUncontinuesLayout() {
+    func setupLayout() {
         for i in 1..<maxStartCount + 1 {
-            let imageView = UIImageView()
-            imageView.image = i <= intNumber ? highLightedImage : defaultImage
-            imageView.setImageColor(color: highLightColor)
-            stackView.addArrangedSubview(imageView)
+            var amount: Double = i <= intNumber ? 1.0 : 0.0
+            if i > intNumber && Double(i) <= ceil(ratingAmount) {
+               let temp = ratingAmount - Double(intNumber)
+                amount = round(temp * 10) / 10
+            }
+            let view = StarRatingView(ratingAmount: amount, color: highLightColor)
+            stackView.addArrangedSubview(view)
         }
-    }
-    
-    func setupContinuesLayout() {
-        
     }
 }

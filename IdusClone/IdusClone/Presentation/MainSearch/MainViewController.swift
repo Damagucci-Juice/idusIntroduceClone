@@ -23,14 +23,15 @@ final class MainViewController: UIViewController {
         super.viewDidLoad()
         view.backgroundColor = .white
         setUpSearchController()
-        let starView = StarView(ratingAmount: 5)
+        let starView = FiveStarView(ratingAmount: 4.5, isContinues: true)
         self.view.addSubview(starView)
-        
+
         starView.snp.makeConstraints { make in
             make.center.equalToSuperview()
-            make.width.equalTo(250)
+            make.width.equalTo(100)
             make.height.equalTo(50)
         }
+        
     }
     
     private func setUpSearchController() {
