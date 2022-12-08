@@ -47,6 +47,5 @@ extension StarRatingView {
             .drawRectangleOnImage(ratingAmount)
         backgroundView.image = tintedImage
         foregroundView.setImageColor(color: color)
-
     }
 }

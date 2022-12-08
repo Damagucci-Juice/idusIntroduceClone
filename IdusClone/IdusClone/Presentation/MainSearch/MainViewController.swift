@@ -23,13 +23,19 @@ final class MainViewController: UIViewController {
         super.viewDidLoad()
         view.backgroundColor = .white
         setUpSearchController()
-        let starView = FiveStarView(ratingAmount: 4.5, isContinues: true)
-        self.view.addSubview(starView)
-
-        starView.snp.makeConstraints { make in
-            make.center.equalToSuperview()
-            make.width.equalTo(100)
-            make.height.equalTo(50)
+//        let starView = FiveStarView(ratingAmount: 4.0, isContinues: true)
+//        self.view.addSubview(starView)
+//
+//        starView.snp.makeConstraints { make in
+//            make.center.equalToSuperview()
+//            make.width.equalTo(100)
+//            make.height.equalTo(50)
+//        }
+        let progressView = ProgressBarView(progressRating: 0.2)
+        view.addSubview(progressView)
+        progressView.snp.makeConstraints { make in
+            make.leading.trailing.centerY.equalToSuperview()
+            make.height.equalTo(10)
         }
         
     }
