@@ -43,7 +43,7 @@ final class MainViewController: UIViewController {
     }
     // MARK: - End 3
     
-    let appDetail = AppIntroduction(id: 123, appName: "123", sellerName: "123", isGameCenterEnabled: false, screenshotURLs: [], artworkULR60: URL(string: "123")!, artworkULR512: URL(string: "123")!, artworkULR100: URL(string: "123")!, releaseNotes: "123", artistID: 123, artistName: "123", genres: [], price: 0.0, resultDescription: "123", primaryGenreName: "123", primaryGenreID: 123, currentVersionReleaseDate: Date.now, contentAdvisoryRating: "123", trackContentRating: "123", minimumOSVersion: "", languageCodes: [], fileSizeBytes: "", sellerURL: URL(string: "123")!, formattedPrice: "123", averagedUserRating: 4.7924325734, userRatingCount: 239, version: "123123423")
+    let appDetail = AppIntroduction(id: 123, appName: "123", sellerName: "123", isGameCenterEnabled: false, screenshotURLs: [], artworkULR60: URL(string: "123")!, artworkULR512: URL(string: "123")!, artworkULR100: URL(string: "123")!, releaseNotes: "123", artistID: 123, artistName: "123", genres: [], price: 0.0, resultDescription: "123", primaryGenreName: "123", primaryGenreID: 123, currentVersionReleaseDate: Date.now, contentAdvisoryRating: "123", trackContentRating: "123", minimumOSVersion: "", languageCodes: [], fileSizeBytes: "", sellerURL: URL(string: "123")!, formattedPrice: "123", averagedUserRating: 4.7924325734, userRatingCount: 19170, version: "123123423")
     
     lazy var ratingView = RatingProgressView(appDetail: appDetail)
     

@@ -20,6 +20,7 @@ final class RatingProgressView: UIView {
     private let amount = UILabel().then { label in
         label.font = .bigRoundedNumber
         label.textColor = .darkGray
+        label.setContentHuggingPriority(.required, for: .horizontal)
     }
     
     private let totalAmount = UILabel().then { label in
@@ -31,13 +32,16 @@ final class RatingProgressView: UIView {
     private let startStackView = UIStackView().then { stackView in
         stackView.axis = .vertical
         stackView.distribution = .equalSpacing
-        stackView.spacing = Const.miniSpacing
     }
     
     private let progressStackView = UIStackView().then { stackView in
         stackView.axis = .vertical
-        stackView.distribution = .fillEqually
-        stackView.spacing = Const.miniSpacing
+        stackView.distribution = .fillProportionally
+    }
+    
+    private let userRatingCount = UILabel().then { label in
+        label.font = .ratingCount
+        label.textColor = .gray
     }
     
     init(appDetail: AppIntroduction) {
@@ -59,7 +63,7 @@ final class RatingProgressView: UIView {
 extension RatingProgressView {
     
     private func setupAddSubviews() {
-        self.addSubviews([title, amount, totalAmount, startStackView, progressStackView])
+        self.addSubviews([title, amount, totalAmount, startStackView, progressStackView, userRatingCount])
     }
     
     private func setupLayout() {
@@ -78,20 +82,26 @@ extension RatingProgressView {
         }
         
         startStackView.snp.makeConstraints { make in
-            make.centerY.equalTo(amount).offset(10)
+            make.centerY.equalTo(amount).offset(5)
             make.leading.equalTo(amount.snp.trailing).offset(Const.largeSpacing)
         }
         
         progressStackView.snp.makeConstraints { make in
             make.height.centerY.equalTo(startStackView)
             make.leading.equalTo(startStackView.snp.trailing)
-            make.width.equalTo(160)
+            make.trailing.equalTo(self.safeAreaLayoutGuide).inset(Const.largeSpacing)
+        }
+        
+        userRatingCount.snp.makeConstraints { make in
+            make.trailing.equalTo(self.safeAreaLayoutGuide).inset(Const.largeSpacing)
+            make.top.equalTo(startStackView.snp.bottom).offset(Const.minimumSpacing)
         }
     }
     
     private func setupAttribute() {
         amount.text = "\(appDetail.averagedUserRating.roundUnder1())"
         amount.setContentCompressionResistancePriority(.required, for: .horizontal)
+        userRatingCount.text = "\(appDetail.userRatingCount.toStringWithComma) Ratings"
     }
 }
 
@@ -102,7 +112,6 @@ extension RatingProgressView {
                 stackview.axis = .horizontal
                 stackview.alignment = .center
                 stackview.spacing = 2
-                stackview.distribution = .equalSpacing
             }
 
             for j in 1..<6 {
