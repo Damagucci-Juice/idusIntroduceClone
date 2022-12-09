@@ -8,7 +8,7 @@ import SnapKit
 import UIKit
 import Then
 
-final class RatingReviewView: UIView {
+final class RatingProgressView: UIView {
     private let appDetail: AppIntroduction
     
     private let title = UILabel().then { label in
@@ -37,12 +37,13 @@ final class RatingReviewView: UIView {
     private let progressStackView = UIStackView().then { stackView in
         stackView.axis = .vertical
         stackView.distribution = .fillEqually
-        stackView.spacing = 4
+        stackView.spacing = Const.miniSpacing
     }
     
     init(appDetail: AppIntroduction) {
         self.appDetail = appDetail
         super.init(frame: CGRect(x: 0, y: 0, width: .zero, height: .zero))
+        setupAddSubviews()
         setupLayout()
         setupAttribute()
         setupStarStackView()
@@ -55,11 +56,13 @@ final class RatingReviewView: UIView {
     }
 }
 
-extension RatingReviewView {
+extension RatingProgressView {
+    
+    private func setupAddSubviews() {
+        self.addSubviews([title, amount, totalAmount, startStackView, progressStackView])
+    }
     
     private func setupLayout() {
-        self.addSubviews([title, amount, totalAmount, startStackView, progressStackView])
-        
         title.snp.makeConstraints { make in
             make.leading.top.equalToSuperview().offset(Const.largeSpacing)
         }
@@ -92,7 +95,7 @@ extension RatingReviewView {
     }
 }
 
-extension RatingReviewView {
+extension RatingProgressView {
     private func setupStarStackView() {
         for i in 0..<5 {
             let stackView = UIStackView().then { stackview in
