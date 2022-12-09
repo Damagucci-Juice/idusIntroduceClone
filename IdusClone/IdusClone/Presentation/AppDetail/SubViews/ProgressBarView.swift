@@ -11,12 +11,12 @@ import Then
 final class ProgressBarView: UIView {
     private let progressRating: Double
     private let backgroundView = UIView().then { view in
-        view.backgroundColor = .lightGray
+        view.backgroundColor = .progressBackground
         view.clipsToBounds = true
         view.layer.cornerRadius = 2.5
     }
     private let foregroundView = UIView().then { view in
-        view.backgroundColor = .darkGray
+        view.backgroundColor = .progressForeground
     }
     
     init(progressRating: Double) {

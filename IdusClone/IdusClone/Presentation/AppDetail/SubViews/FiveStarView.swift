@@ -16,7 +16,11 @@ final class FiveStarView: UIView {
         return isContinues ? .lightGray : .highlightedStarLight
     }
     private let isContinues: Bool
-    private let ratingAmount: Double
+    var ratingAmount: Double {
+        didSet {
+            setupLayout()
+        }
+    }
     private let maxStartCount = 5
     private var intNumber: Int { Int(ratingAmount) }
     

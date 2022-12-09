@@ -19,13 +19,13 @@ final class RatingProgressView: UIView {
     
     private let amount = UILabel().then { label in
         label.font = .bigRoundedNumber
-        label.textColor = .darkGray
+        label.textColor = .bigRoundedNumbersColor
         label.setContentHuggingPriority(.required, for: .horizontal)
     }
     
     private let totalAmount = UILabel().then { label in
         label.font = .smallScript
-        label.textColor = .lightGray
+        label.textColor = .gray
         label.text = "out of 5"
     }
     
@@ -78,11 +78,11 @@ extension RatingProgressView {
         
         totalAmount.snp.makeConstraints { make in
             make.centerX.equalTo(amount)
-            make.top.equalTo(amount.snp.bottom).inset(Const.smallSpacing)
+            make.top.equalTo(amount.snp.bottom).inset(Const.minimumSpacing)
         }
         
         startStackView.snp.makeConstraints { make in
-            make.centerY.equalTo(amount).offset(5)
+            make.centerY.equalTo(amount)
             make.leading.equalTo(amount.snp.trailing).offset(Const.largeSpacing)
         }
         
@@ -93,8 +93,9 @@ extension RatingProgressView {
         }
         
         userRatingCount.snp.makeConstraints { make in
-            make.trailing.equalTo(self.safeAreaLayoutGuide).inset(Const.largeSpacing)
-            make.top.equalTo(startStackView.snp.bottom).offset(Const.minimumSpacing)
+            make.trailing.equalTo(self.safeAreaLayoutGuide).inset(Const.maxSpacing)
+//            make.top.equalTo(startStackView.snp.bottom).offset(Const.smallMediumSpacing)
+            make.centerY.equalTo(totalAmount)
         }
     }
     
@@ -118,7 +119,7 @@ extension RatingProgressView {
                 let imageView = UIImageView(frame: CGRect(x: 0, y: 0, width: .zero, height: .zero))
                 imageView.contentMode = .scaleToFill
                 let imgString = j > i ? "star.fill" : "star"
-                let imgColor: UIColor = j > i ? .gray : .white
+                let imgColor: UIColor = j > i ? .starLight : .white
                 let image = UIImage(systemName: imgString)?.tinted(with: imgColor)?.resized(to: CGSize(width: 10, height: 10))
                 imageView.image = image
                 stackView.addArrangedSubview(imageView)
