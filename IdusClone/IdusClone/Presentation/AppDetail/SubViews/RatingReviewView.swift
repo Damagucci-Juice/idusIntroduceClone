@@ -75,7 +75,7 @@ extension RatingReviewView {
         }
         
         startStackView.snp.makeConstraints { make in
-            make.centerY.equalTo(amount)
+            make.centerY.equalTo(amount).offset(10)
             make.leading.equalTo(amount.snp.trailing).offset(Const.largeSpacing)
         }
         
