@@ -38,8 +38,8 @@ extension ProgressBarView {
         
         backgroundView.snp.makeConstraints { make in
             make.leading.trailing.equalToSuperview().inset(Const.miniSpacing)
-            make.top.equalToSuperview().inset(Const.miniSpacing)
-            make.height.equalTo(Const.miniSpacing)
+            make.centerY.equalToSuperview()
+            make.height.equalTo(Const.smallMediumSpacing)
         }
         
         foregroundView.snp.makeConstraints { make in

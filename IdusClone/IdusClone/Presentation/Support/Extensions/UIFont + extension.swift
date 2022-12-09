@@ -12,4 +12,5 @@ extension UIFont {
     static let roundedNumber = UIFont(name: "SFProRounded-Bold", size: 32)
     static let bigRoundedNumber = UIFont(name: "SFProRounded-Bold", size: 64)
     static let smallScript = UIFont.boldSystemFont(ofSize: 16)
+    static let ratingCount = UIFont.systemFont(ofSize: 16)
 }
