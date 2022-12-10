@@ -14,5 +14,7 @@ struct Const {
     static let smallSpacing: CGFloat = 8
     static let mediumSpacing: CGFloat = 12
     static let largeSpacing: CGFloat = 16
-    static let maxSpacing: CGFloat = 20
+    static let xLargeSpacing: CGFloat = 20
+    static let xxLargeSpacing: CGFloat = 25
+    static let xxxLargeSpacing: CGFloat = 30
 }
