@@ -18,6 +18,7 @@ final class FiveStarView: UIView {
     private let isContinues: Bool
     var ratingAmount: Double {
         didSet {
+            prepareLayout()
             setupLayout()
         }
     }
@@ -26,7 +27,7 @@ final class FiveStarView: UIView {
     
     private let stackView = UIStackView().then {
         $0.axis = .horizontal
-        $0.distribution = .fillEqually
+        $0.distribution = .equalSpacing
     }
     
     init(ratingAmount: Double, isContinues: Bool = false) {
@@ -54,6 +55,11 @@ final class FiveStarView: UIView {
             }
             let view = StarRatingView(ratingAmount: amount, color: highLightColor)
             stackView.addArrangedSubview(view)
+        }
+    }
+    private func prepareLayout() {
+        stackView.arrangedSubviews.forEach { view in
+            stackView.removeArrangedSubview(view)
         }
     }
 }

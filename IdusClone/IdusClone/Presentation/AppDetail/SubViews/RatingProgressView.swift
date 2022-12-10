@@ -93,8 +93,7 @@ extension RatingProgressView {
         }
         
         userRatingCount.snp.makeConstraints { make in
-            make.trailing.equalTo(self.safeAreaLayoutGuide).inset(Const.maxSpacing)
-//            make.top.equalTo(startStackView.snp.bottom).offset(Const.smallMediumSpacing)
+            make.trailing.equalTo(self.safeAreaLayoutGuide).inset(Const.xLargeSpacing)
             make.centerY.equalTo(totalAmount)
         }
     }
