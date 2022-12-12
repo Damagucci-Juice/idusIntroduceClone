@@ -8,6 +8,7 @@
 import Foundation
 
 struct Const {
+    static let dividerHeight: CGFloat = 1
     static let minimumSpacing: CGFloat = 2
     static let miniSpacing: CGFloat = 4
     static let smallMediumSpacing: CGFloat = 6
