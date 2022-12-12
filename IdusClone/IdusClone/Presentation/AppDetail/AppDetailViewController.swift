@@ -28,7 +28,9 @@ final class AppDetailViewController: UIViewController {
     
     private lazy var ratingView = RatingProgressView(appDetail: appDetail)
     
-    private lazy var whatNewView = WhatNewView()
+    private lazy var whatNewView = WhatNewView(currentVersion: appDetail.version, updateDate: appDetail.currentVersionReleaseDate, newDescription: appDetail.releaseNotes)
+    
+    private lazy var informationView = InformationView(appDetail: appDetail)
     
     private let appDetail: AppIntroduction
     
@@ -56,7 +58,7 @@ extension AppDetailViewController {
     private func setupAddSubView() {
         view.addSubview(defaultScrollView)
         defaultScrollView.addSubview(contentView)
-        contentView.addSubviews([ratingView, reviewScrollView, whatNewView])
+        contentView.addSubviews([ratingView, reviewScrollView, whatNewView, informationView])
         reviewScrollView.addSubview(reviewScrollViewContainer)
     }
     
@@ -106,12 +108,17 @@ extension AppDetailViewController {
             }
         }
         
-        
-        
         whatNewView.snp.makeConstraints { make in
             make.leading.trailing.equalToSuperview()
             make.top.equalTo(reviewScrollView.snp.bottom).offset(Const.largeSpacing)
             make.height.equalTo(150)
+//            make.bottom.equalTo(informationView.snp.top)
+        }
+        
+        informationView.snp.makeConstraints { make in
+            make.leading.trailing.equalToSuperview()
+            make.top.equalTo(whatNewView.snp.bottom).offset(Const.largeSpacing)
+            make.bottom.equalToSuperview()
         }
     }
 }

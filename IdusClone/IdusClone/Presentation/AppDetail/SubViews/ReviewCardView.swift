@@ -1,5 +1,5 @@
 //
-//  ReviewView.swift
+//  ReviewCardView.swift
 //  IdusClone
 //
 //  Created by YEONGJIN JANG on 2022/12/09.
@@ -8,7 +8,7 @@ import SnapKit
 import UIKit
 import Then
 
-final class ReviewView: UIView {
+final class ReviewCardView: UIView {
     private let title = UILabel().then { label in
         label.font = .smallTitle
         label.textColor = .label
@@ -57,7 +57,7 @@ final class ReviewView: UIView {
         let longText = """
                         Lorem Ipsum is simply dummy text of the printing and typesetting industry. Lorem Ipsum has been the industry's standard dummy text ever since the 1500s, when an unknown printer took a galley of type and scrambled it to make a type specimen book. It has survived not only five centuries, but also the leap into electronic typesetting, remaining essentially unchanged. It was popularised in the 1960s with the release of Letraset sheets containing Lorem Ipsum passages, and more recently with desktop publishing software like Aldus PageMaker including versions of Lorem Ipsum.
                         """
-        self.init(title: "마구마구 운영자님들", ratingAmount: Int.random(in: 1...5), reviewDescription: longText, userName: "유저이름", uploadDate: date)
+        self.init(title: "review card title", ratingAmount: Int.random(in: 1...5), reviewDescription: longText, userName: "user name", uploadDate: date)
     }
     
     @available(*, unavailable)
@@ -65,7 +65,7 @@ final class ReviewView: UIView {
         fatalError("init(coder:) has not been implemented")
     }
 }
-extension ReviewView {
+extension ReviewCardView {
     private func setupAddSubview() {
         addSubviews([title, fiveStarView, reviewDescription, userName, uploadDate])
         drawFivestars()
