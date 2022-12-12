@@ -24,7 +24,7 @@ final class RatingProgressView: UIView {
     }
     
     private let totalAmount = UILabel().then { label in
-        label.font = .smallScript
+        label.font = .totalRating
         label.textColor = .gray
         label.text = "out of 5"
     }
