@@ -34,7 +34,7 @@ struct ResultDTO: Codable {
     let genreIDS: [String]
     let currentVersionReleaseDate: Date
     let contentAdvisoryRating, minimumOSVersion, trackCensoredName: String
-    let languageCodesISO2A: [String]
+    let languageCodesISO2A: [LanguageCode]
     let fileSizeBytes: String
     let sellerURL: String
     let formattedPrice: String
@@ -73,9 +73,12 @@ struct ResultDTO: Codable {
 
 extension ResultDTO {
     func toDomain() -> AppIntroduction {
+        let fileSizeMB = String(((Double(fileSizeBytes) ?? 0) / 1024000).roundUnder1()) + " MB"
+        let copyright = "© \(String(sellerName.split(separator: " ")[0]))"
+        
         return .init(id: trackID,
                      appName: trackName,
-                     sellerName: sellerName,
+                     sellerName: copyright,
                      isGameCenterEnabled: isGameCenterEnabled,
                      screenshotURLs: screenshotUrls.compactMap { URL(string: $0) },
                      artworkULR60: URL(string: artworkUrl60)!,
@@ -92,9 +95,9 @@ extension ResultDTO {
                      currentVersionReleaseDate: currentVersionReleaseDate,
                      contentAdvisoryRating: contentAdvisoryRating,
                      trackContentRating: trackContentRating,
-                     minimumOSVersion: minimumOSVersion,
-                     languageCodes: languageCodesISO2A,
-                     fileSizeBytes: fileSizeBytes,
+                     minimumOSVersion: Double(minimumOSVersion) ?? 0.0,
+                     languageCodes: languageCodesISO2A.map { $0.capitalized },
+                     fileSizeBytes: fileSizeMB,
                      sellerURL: URL(string: sellerURL)!,
                      formattedPrice: formattedPrice,
                      averagedUserRating: averageUserRating,

@@ -30,7 +30,7 @@ struct AppIntroduction: Equatable, Identifiable {
     let currentVersionReleaseDate: Date
     let contentAdvisoryRating: String
     let trackContentRating: String
-    let minimumOSVersion: String
+    let minimumOSVersion: Double
     let languageCodes: [String]
     let fileSizeBytes: String
     let sellerURL: URL
