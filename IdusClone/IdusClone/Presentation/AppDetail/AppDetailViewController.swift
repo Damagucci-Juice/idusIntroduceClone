@@ -18,6 +18,8 @@ final class AppDetailViewController: UIViewController {
     
     private let defaultScrollDelegate = DefaultScrollDelegate()
     
+    lazy var representView = RepresentView(appDetail: appDetail)
+    
     private let reviewScrollView = UIScrollView().then { scrollView in
         scrollView.isPagingEnabled = true
         scrollView.showsHorizontalScrollIndicator = false
@@ -40,6 +42,7 @@ final class AppDetailViewController: UIViewController {
     
     private let uiFactory = UIFactory()
     
+    @available(*, unavailable)
     required init?(coder: NSCoder) {
         fatalError("init(coder:) has not been implemented")
     }
@@ -61,10 +64,12 @@ final class AppDetailViewController: UIViewController {
 extension AppDetailViewController {
     
     private func setupNavigation() {
+        let beutifulMagicNumber: CGFloat = 10
+        let navibarHeight = (navigationController?.navigationBar.frame.height ?? 0) - beutifulMagicNumber
         let titleView = UIImageView()
         titleView.load(url: appDetail.artworkULR60)
-        titleView.frame = CGRect(x: 0, y: 0, width: 30, height: 30)
-        titleView.layer.cornerRadius = 5
+        titleView.frame = CGRect(x: 0, y: 0, width: navibarHeight, height: navibarHeight)
+        titleView.layer.cornerRadius = navibarHeight / 7
         titleView.clipsToBounds = true
         navigationItem.titleView = titleView
     }
@@ -72,7 +77,7 @@ extension AppDetailViewController {
     private func setupAddSubView() {
         view.addSubview(defaultScrollView)
         defaultScrollView.addSubview(contentView)
-        contentView.addSubviews([ratingView, reviewScrollView, whatNewView, informationView])
+        contentView.addSubviews([representView, ratingView, reviewScrollView, whatNewView, informationView])
         reviewScrollView.addSubview(reviewScrollViewContainer)
     }
     
@@ -86,8 +91,14 @@ extension AppDetailViewController {
             make.height.equalTo(defaultScrollView).priority(.low)
         }
         
-        ratingView.snp.makeConstraints { make in
+        representView.snp.makeConstraints { make in
             make.leading.top.trailing.equalTo(contentView)
+            make.height.equalTo(100)
+        }
+        
+        ratingView.snp.makeConstraints { make in
+            make.leading.trailing.equalTo(representView)
+            make.top.equalTo(representView.snp.bottom)
             make.height.equalTo(165)
         }
         
