@@ -93,7 +93,7 @@ extension AppDetailViewController {
         
         representView.snp.makeConstraints { make in
             make.leading.top.trailing.equalTo(contentView)
-            make.height.equalTo(100)
+            make.height.equalTo(120)
         }
         
         ratingView.snp.makeConstraints { make in
