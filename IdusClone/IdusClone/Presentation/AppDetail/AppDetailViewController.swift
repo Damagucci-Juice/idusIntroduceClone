@@ -61,7 +61,12 @@ final class AppDetailViewController: UIViewController {
 extension AppDetailViewController {
     
     private func setupNavigation() {
-        navigationItem.titleView = UIImageView(image: UIImage(systemName: "applelogo"))
+        let titleView = UIImageView()
+        titleView.load(url: appDetail.artworkULR60)
+        titleView.frame = CGRect(x: 0, y: 0, width: 30, height: 30)
+        titleView.layer.cornerRadius = 5
+        titleView.clipsToBounds = true
+        navigationItem.titleView = titleView
     }
     
     private func setupAddSubView() {
