@@ -10,6 +10,7 @@ import UIKit
 final class DefaultSearchBarDelegate: NSObject, UISearchBarDelegate {
     
     var viewController: MainViewController?
+    var onSearched: (AppIntroduction) -> Void = { _ in }
 
     func setup(_ viewController: MainViewController) {
         self.viewController = viewController
@@ -45,9 +46,10 @@ final class DefaultSearchBarDelegate: NSObject, UISearchBarDelegate {
             return
         }
         Task {
-            guard let results = try await self.viewController?.networkManager.fetchData(searchText) else { return }
-            viewController?.navigationItem.backButtonTitle = "Search"
-            viewController?.navigationController?.pushViewController(AppDetailViewController(results[0].toDomain()), animated: false)
+            guard let results = try await self.viewController?.networkManager.fetchData(searchText) else {
+                return
+            }
+            self.onSearched(results[0].toDomain())
         }
     }
 }

@@ -17,8 +17,12 @@ final class DefaultScrollDelegate: NSObject, UIScrollViewDelegate {
         else { return }
         let magicalSafeAreaTop: CGFloat = safeAreaTop + (vc.navigationController?.navigationBar.frame.height ?? 0)
         let offset: CGFloat = magicalSafeAreaTop + scrollView.contentOffset.y
-        let alpha: CGFloat = 2 - (offset / safeAreaTop)
+        let alpha: CGFloat = 1 - (offset / safeAreaTop)
+        let reverseAlpha = (1 - alpha) / 1.2
+        
         vc.representView.alpha = alpha
-        titleView.alpha = (1 - alpha) / 1.2
+        vc.inAppPurchaseLabel.alpha = reverseAlpha
+        vc.downloadButton.alpha = reverseAlpha
+        titleView.alpha = reverseAlpha
     }
 }

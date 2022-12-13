@@ -21,16 +21,16 @@ final class RepresentView: UIView {
     
     private let vstack = UIStackView().then { stackView in
         stackView.axis = .vertical
-        stackView.spacing = Const.smallSpacing
+        stackView.spacing = Const.miniSpacing
         stackView.distribution = .equalSpacing
         stackView.alignment = .leading
     }
     
     private let hstack = UIStackView().then { stackView in
         stackView.axis = .horizontal
-        stackView.spacing = Const.xxxLargeSpacing
+        stackView.spacing = Const.miniSpacing
         stackView.distribution = .equalSpacing
-        stackView.alignment = .lastBaseline
+        stackView.alignment = .center
     }
     
     private let appNameLabel = UILabel().then { label in
@@ -54,7 +54,6 @@ final class RepresentView: UIView {
         label.font = .smallText
     }
     
-//    let button = UIButton().layer.c
     private lazy var downloadButton = BasePaddingButton(primaryAction: .init(handler: { _ in
         self.onDownload()
     })).then { button in
@@ -63,12 +62,15 @@ final class RepresentView: UIView {
         button.backgroundColor = .tintColor
         button.layer.cornerRadius = button.intrinsicContentSize.height / 2
         button.clipsToBounds = true
+        button.titleLabel?.font = .totalRating
     }
     
     private lazy var shareButton = UIButton(primaryAction: .init(handler: { _ in
         self.onShared()
     })).then { button in
-        button.setImage(UIImage(systemName: "square.and.arrow.up"), for: .normal)
+        let config = UIImage.SymbolConfiguration(pointSize: .zero ,weight: .bold, scale: .large)
+        let largeBoldDoc = UIImage(systemName: "square.and.arrow.up", withConfiguration: config)
+        button.setImage(largeBoldDoc, for: .normal)
     }
     
     init(appDetail: AppIntroduction) {
@@ -87,15 +89,15 @@ final class RepresentView: UIView {
 
 extension RepresentView {
     private func setupAddSubview() {
-        hstack.addArrangedSubviews([downloadButton, inAppPurchaseLabel, shareButton])
-        vstack.addArrangedSubviews([appNameLabel, artistNameLabel, hstack])
-        addSubviews([imageView, vstack])
+        hstack.addArrangedSubviews([downloadButton, inAppPurchaseLabel])
+        vstack.addArrangedSubviews([appNameLabel, artistNameLabel])
+        addSubviews([imageView, vstack, hstack, shareButton])
     }
     private func setupAttribute(_ info: AppIntroduction) {
         imageView.load(url: info.artworkULR512)
         appNameLabel.text = info.appName
         artistNameLabel.text = info.artistName
-        imageView.layer.cornerRadius = 10
+        imageView.layer.cornerRadius = Const.mediumSpacing
     }
     private func setupLayout() {
         imageView.snp.makeConstraints { make in
@@ -106,36 +108,19 @@ extension RepresentView {
         }
         
         vstack.snp.makeConstraints { make in
-            make.centerY.equalTo(imageView)
+            make.top.equalTo(imageView)
             make.leading.equalTo(imageView.snp.trailing).offset(Const.largeSpacing)
             make.trailing.equalToSuperview().inset(Const.largeSpacing)
         }
-    }
-}
-
-final class BasePaddingButton: UIButton {
-    private var padding = UIEdgeInsets(top: Const.minimumSpacing,
-                                       left: Const.xxxLargeSpacing,
-                                       bottom: Const.minimumSpacing,
-                                       right: Const.xxxLargeSpacing)
-
-    convenience init(padding: UIEdgeInsets) {
-        self.init()
-        self.padding = padding
-    }
-
-//    override func drawText(in rect: CGRect) {
-//        super.drawText(in: rect.inset(by: padding))
-//    }
-    override func draw(_ rect: CGRect) {
-        super.draw(rect.inset(by: padding))
-    }
-
-    override var intrinsicContentSize: CGSize {
-        var contentSize = super.intrinsicContentSize
-        contentSize.height += padding.top + padding.bottom
-        contentSize.width += padding.left + padding.right
-
-        return contentSize
+        
+        hstack.snp.makeConstraints { make in
+            make.leading.equalTo(vstack)
+            make.bottom.equalTo(imageView).offset(Const.smallSpacing)
+        }
+        
+        shareButton.snp.makeConstraints { make in
+            make.trailing.equalTo(vstack)
+            make.centerY.equalTo(hstack)
+        }
     }
 }
