@@ -29,6 +29,38 @@ final class AppDetailViewController: UIViewController {
         stackView.axis = .horizontal
         stackView.spacing = Const.smallSpacing
     }
+        
+    let inAppPurchaseLabel = UILabel().then { label in
+        label.numberOfLines = 2
+        label.textAlignment = .left
+        label.text = """
+                    In-App
+                    Purchases
+                    """
+        label.font = .smallText
+    }
+    
+//    lazy var downloadButton = BasePaddingButton(primaryAction: .init(handler: { _ in
+//        print("GET! GET")
+//    })).then { button in
+//        button.setTitle("GET", for: .normal)
+//        button.setTitleColor(.white, for: .normal)
+//        button.backgroundColor = .tintColor
+//        button.layer.cornerRadius = button.intrinsicContentSize.height / 2
+//        button.clipsToBounds = true
+//        button.titleLabel?.font = .totalRating
+//    }
+    lazy var downloadButton = BasePaddingButton(padding: UIEdgeInsets(top: 2, left: 30, bottom: 2, right: 30)).then { button in
+        button.addAction(.init(handler: { _ in
+            print("GET! GET")
+        }), for: .touchUpInside)
+        button.setTitle("GET", for: .normal)
+        button.setTitleColor(.white, for: .normal)
+        button.backgroundColor = .tintColor
+        button.layer.cornerRadius = 5
+        button.clipsToBounds = true
+        button.titleLabel?.font = .totalRating
+    }
     
     lazy var ratingView = RatingProgressView(appDetail: appDetail)
     
@@ -54,24 +86,29 @@ final class AppDetailViewController: UIViewController {
     
     override func viewDidLoad() {
         super.viewDidLoad()
-        setupNavigation()
+        setupNavBar()
         setupAddSubView()
         setupAttribute()
+        setupBinding()
         setupLayout()
     }
 }
 
 extension AppDetailViewController {
     
-    private func setupNavigation() {
+    private func setupNavBar() {
         let beutifulMagicNumber: CGFloat = 10
         let navibarHeight = (navigationController?.navigationBar.frame.height ?? 0) - beutifulMagicNumber
-        let titleView = UIImageView()
-        titleView.load(url: appDetail.artworkULR60)
-        titleView.frame = CGRect(x: 0, y: 0, width: navibarHeight, height: navibarHeight)
-        titleView.layer.cornerRadius = navibarHeight / 7
-        titleView.clipsToBounds = true
-        navigationItem.titleView = titleView
+        let imageView = UIImageView()
+        imageView.load(url: appDetail.artworkULR60)
+        imageView.frame = CGRect(x: 0, y: 0, width: navibarHeight, height: navibarHeight)
+        imageView.layer.cornerRadius = navibarHeight / 7
+        imageView.clipsToBounds = true
+        imageView.contentMode = .scaleAspectFit
+        let labelButton = UIBarButtonItem(customView: inAppPurchaseLabel)
+        let downButton = UIBarButtonItem(customView: downloadButton)
+        navigationItem.setRightBarButtonItems([downButton, labelButton], animated: false)
+        navigationItem.titleView = imageView
     }
     
     private func setupAddSubView() {
@@ -93,12 +130,22 @@ extension AppDetailViewController {
         
         representView.snp.makeConstraints { make in
             make.leading.top.trailing.equalTo(contentView)
-            make.height.equalTo(120)
+            make.height.equalTo(130)
+        }
+        
+        uiFactory.makeDivider { divider in
+            view.addSubview(divider)
+            divider.snp.makeConstraints { make in
+                make.top.equalTo(representView.snp.bottom).offset(Const.xLargeSpacing)
+                make.leading.equalTo(contentView).offset(Const.largeSpacing)
+                make.trailing.equalTo(contentView).inset(Const.largeSpacing)
+                make.height.equalTo(Const.dividerHeight)
+            }
         }
         
         ratingView.snp.makeConstraints { make in
             make.leading.trailing.equalTo(representView)
-            make.top.equalTo(representView.snp.bottom)
+            make.top.equalTo(representView.snp.bottom).offset(Const.mediumSpacing)
             make.height.equalTo(165)
         }
         
@@ -150,5 +197,19 @@ extension AppDetailViewController {
         view.backgroundColor = .white
         self.defaultScrollView.delegate = defaultScrollDelegate
         defaultScrollDelegate.vc = self
+    }
+    
+    private func setupBinding() {
+        Task {
+            self.representView.onShared = {
+                //TODO: - share 기능 추가
+                print("represent shared tapped")
+            }
+            
+            self.representView.onDownload = {
+                //TODO: - Download 기능 추가
+                print("represent get tapped")
+            }
+        }
     }
 }

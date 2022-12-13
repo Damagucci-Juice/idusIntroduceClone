@@ -8,8 +8,9 @@ import SnapKit
 import UIKit
 import Then
 
+//    - KakaoTalk: 362057947
+//    - YouTube: 544007664
 final class MainViewController: UIViewController {
-    
     private let searchBar = UISearchBar().then {
         let appCode = (Bundle.main.object(forInfoDictionaryKey: "AppCode") as? String) ?? "앱코드"
         $0.placeholder = "\(appCode)를 입력해주세요"
@@ -23,19 +24,25 @@ final class MainViewController: UIViewController {
         super.viewDidLoad()
         view.backgroundColor = .white
         setUpSearchController()
+        setupNavBar()
         setupAddSubView()
+        setupBiding()
         setupAttribute()
         setupLayout()
     }
     
-    private func setUpSearchController() {
-        self.navigationItem.titleView = searchBar
-        searchBarDelegate.viewController = self
-        searchBar.delegate = self.searchBarDelegate
-    }
 }
 
 extension MainViewController {
+    private func setUpSearchController() {
+        searchBarDelegate.viewController = self
+        searchBar.delegate = self.searchBarDelegate
+    }
+    
+    private func setupNavBar() {
+        navigationItem.backButtonTitle = "Search"
+        navigationItem.titleView = searchBar
+    }
     private func setupAddSubView() {
         
     }
@@ -46,5 +53,11 @@ extension MainViewController {
     
     private func setupAttribute() {
 
+    }
+    
+    private func setupBiding() {
+        searchBarDelegate.onSearched = { [unowned self] appInfo in
+            self.navigationController?.pushViewController(AppDetailViewController(appInfo), animated: false)
+        }
     }
 }
