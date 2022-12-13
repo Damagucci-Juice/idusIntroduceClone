@@ -24,8 +24,8 @@ final class MainViewController: UIViewController {
         view.backgroundColor = .white
         setUpSearchController()
         setupAddSubView()
-        setupLayout()
         setupAttribute()
+        setupLayout()
     }
     
     private func setUpSearchController() {

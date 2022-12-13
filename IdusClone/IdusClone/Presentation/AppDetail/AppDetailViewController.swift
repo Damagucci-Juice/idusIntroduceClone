@@ -16,19 +16,23 @@ final class AppDetailViewController: UIViewController {
     
     private let contentView = UIView().then { view in }
     
+    private let defaultScrollDelegate = DefaultScrollDelegate()
+    
     private let reviewScrollView = UIScrollView().then { scrollView in
         scrollView.isPagingEnabled = true
         scrollView.showsHorizontalScrollIndicator = false
     }
-    
+
     private let reviewScrollViewContainer = UIStackView().then { stackView in
         stackView.axis = .horizontal
         stackView.spacing = Const.smallSpacing
     }
     
-    private lazy var ratingView = RatingProgressView(appDetail: appDetail)
+    lazy var ratingView = RatingProgressView(appDetail: appDetail)
     
-    private lazy var whatNewView = WhatNewView(currentVersion: appDetail.version, updateDate: appDetail.currentVersionReleaseDate, newDescription: appDetail.releaseNotes)
+    private lazy var whatNewView = WhatNewView(currentVersion: appDetail.version,
+                                               updateDate: appDetail.currentVersionReleaseDate,
+                                               newDescription: appDetail.releaseNotes)
     
     private lazy var informationView = InformationView(appDetail: appDetail)
     
@@ -47,13 +51,18 @@ final class AppDetailViewController: UIViewController {
     
     override func viewDidLoad() {
         super.viewDidLoad()
-        view.backgroundColor = .white
+        setupNavigation()
         setupAddSubView()
+        setupAttribute()
         setupLayout()
     }
 }
 
 extension AppDetailViewController {
+    
+    private func setupNavigation() {
+        navigationItem.titleView = UIImageView(image: UIImage(systemName: "applelogo"))
+    }
     
     private func setupAddSubView() {
         view.addSubview(defaultScrollView)
@@ -83,7 +92,7 @@ extension AppDetailViewController {
             make.top.equalTo(ratingView.snp.bottom)
             make.height.equalTo(200)
         }
-        
+
         reviewScrollViewContainer.snp.makeConstraints { make in
             make.top.bottom.equalTo(reviewScrollView)
             make.leading.equalToSuperview()
@@ -97,7 +106,7 @@ extension AppDetailViewController {
                 make.height.equalTo(reviewScrollView)
             }
         }
-        
+
         uiFactory.makeDivider { divider in
             view.addSubview(divider)
             divider.snp.makeConstraints { make in
@@ -107,12 +116,11 @@ extension AppDetailViewController {
                 make.height.equalTo(Const.dividerHeight)
             }
         }
-        
+
         whatNewView.snp.makeConstraints { make in
             make.leading.trailing.equalToSuperview()
             make.top.equalTo(reviewScrollView.snp.bottom).offset(Const.largeSpacing)
             make.height.equalTo(150)
-//            make.bottom.equalTo(informationView.snp.top)
         }
         
         informationView.snp.makeConstraints { make in
@@ -120,5 +128,11 @@ extension AppDetailViewController {
             make.top.equalTo(whatNewView.snp.bottom).offset(Const.largeSpacing)
             make.bottom.equalToSuperview()
         }
+    }
+    
+    private func setupAttribute() {
+        view.backgroundColor = .white
+        self.defaultScrollView.delegate = defaultScrollDelegate
+        defaultScrollDelegate.vc = self
     }
 }

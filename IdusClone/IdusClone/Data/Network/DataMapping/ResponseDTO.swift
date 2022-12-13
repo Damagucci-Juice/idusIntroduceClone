@@ -13,6 +13,21 @@ struct ResponseDTO: Codable {
 }
 
 struct ResultDTO: Codable {
+    enum LanguageCode: String, Codable {
+        case english = "EN"
+        case korean = "KO"
+        case japanese = "JA"
+        case italian = "IT"
+        case chinese = "ZH"
+        case spanish = "ES"
+        case german = "DE"
+        case french = "FR"
+        
+        var capitalized: String {
+            return String(describing: self).capitalized
+        }
+    }
+    
     let isGameCenterEnabled: Bool
     let supportedDevices: [String]
     let screenshotUrls: [String]
