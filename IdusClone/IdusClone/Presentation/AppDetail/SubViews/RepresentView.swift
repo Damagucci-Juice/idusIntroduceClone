@@ -16,7 +16,6 @@ final class RepresentView: UIView {
     
     private let imageView = UIImageView().then { imageView in
         imageView.frame = CGRect(x: 0, y: 0, width: .zero, height: .zero)
-        // TODO: - Magic Number X
         imageView.clipsToBounds = true
     }
     
@@ -29,7 +28,7 @@ final class RepresentView: UIView {
     
     private let hstack = UIStackView().then { stackView in
         stackView.axis = .horizontal
-        stackView.spacing = Const.miniSpacing
+        stackView.spacing = Const.xxxLargeSpacing
         stackView.distribution = .equalSpacing
         stackView.alignment = .lastBaseline
     }
@@ -55,10 +54,15 @@ final class RepresentView: UIView {
         label.font = .smallText
     }
     
-    private lazy var downloadButton = UIButton(primaryAction: .init(handler: { _ in
+//    let button = UIButton().layer.c
+    private lazy var downloadButton = BasePaddingButton(primaryAction: .init(handler: { _ in
         self.onDownload()
     })).then { button in
         button.setTitle("GET", for: .normal)
+        button.setTitleColor(.white, for: .normal)
+        button.backgroundColor = .tintColor
+        button.layer.cornerRadius = button.intrinsicContentSize.height / 2
+        button.clipsToBounds = true
     }
     
     private lazy var shareButton = UIButton(primaryAction: .init(handler: { _ in
@@ -91,7 +95,7 @@ extension RepresentView {
         imageView.load(url: info.artworkULR512)
         appNameLabel.text = info.appName
         artistNameLabel.text = info.artistName
-        imageView.layer.cornerRadius = imageView.frame.height / 7
+        imageView.layer.cornerRadius = 10
     }
     private func setupLayout() {
         imageView.snp.makeConstraints { make in
@@ -103,8 +107,35 @@ extension RepresentView {
         
         vstack.snp.makeConstraints { make in
             make.centerY.equalTo(imageView)
-            make.leading.equalTo(imageView.snp.trailing).offset(Const.mediumSpacing)
+            make.leading.equalTo(imageView.snp.trailing).offset(Const.largeSpacing)
             make.trailing.equalToSuperview().inset(Const.largeSpacing)
         }
+    }
+}
+
+final class BasePaddingButton: UIButton {
+    private var padding = UIEdgeInsets(top: Const.minimumSpacing,
+                                       left: Const.xxxLargeSpacing,
+                                       bottom: Const.minimumSpacing,
+                                       right: Const.xxxLargeSpacing)
+
+    convenience init(padding: UIEdgeInsets) {
+        self.init()
+        self.padding = padding
+    }
+
+//    override func drawText(in rect: CGRect) {
+//        super.drawText(in: rect.inset(by: padding))
+//    }
+    override func draw(_ rect: CGRect) {
+        super.draw(rect.inset(by: padding))
+    }
+
+    override var intrinsicContentSize: CGSize {
+        var contentSize = super.intrinsicContentSize
+        contentSize.height += padding.top + padding.bottom
+        contentSize.width += padding.left + padding.right
+
+        return contentSize
     }
 }
