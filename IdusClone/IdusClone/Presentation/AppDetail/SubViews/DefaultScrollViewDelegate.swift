@@ -10,14 +10,15 @@ import UIKit
 final class DefaultScrollDelegate: NSObject, UIScrollViewDelegate {
     var vc: AppDetailViewController?
     
-    func scrollViewDidScroll(_ scrollView: UIScrollView) {
+    func scrollViewDidScroll(_ scrollView: UIScrollView) {        
         guard let vc = vc,
-              let titleView = vc.navigationItem.titleView
+              let titleView = vc.navigationItem.titleView,
+              let safeAreaTop: CGFloat = SceneDelegate.shared?.window?.safeAreaInsets.top
         else { return }
-        let safeAreaTop = vc.view.safeAreaInsets.top
-        let offset: CGFloat = safeAreaTop + scrollView.contentOffset.y
+        let magicalSafeAreaTop: CGFloat = safeAreaTop + (vc.navigationController?.navigationBar.frame.height ?? 0)
+        let offset: CGFloat = magicalSafeAreaTop + scrollView.contentOffset.y
         let alpha: CGFloat = 1 - (offset / safeAreaTop)
-        vc.ratingView.alpha = alpha
+        vc.representView.alpha = alpha
         titleView.alpha = 1 - alpha
     }
 }

@@ -15,4 +15,5 @@ extension UIFont {
     static let totalRating = UIFont.systemFont(ofSize: 16, weight: .bold)
     static let ratingCount = UIFont.systemFont(ofSize: 16, weight: .light)
     static let descriptionText: UIFont = UIFont.systemFont(ofSize: 16)
+    static let smallText = UIFont.systemFont(ofSize: 10, weight: .light)
 }
