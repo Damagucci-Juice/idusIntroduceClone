@@ -32,11 +32,13 @@ final class RatingProgressView: UIView {
     private let startStackView = UIStackView().then { stackView in
         stackView.axis = .vertical
         stackView.distribution = .equalSpacing
+        stackView.spacing = Const.dividerHeight
     }
     
     private let progressStackView = UIStackView().then { stackView in
         stackView.axis = .vertical
         stackView.distribution = .fillProportionally
+        stackView.spacing = Const.dividerHeight
     }
     
     private let userRatingCount = UILabel().then { label in
@@ -83,12 +85,12 @@ extension RatingProgressView {
         
         startStackView.snp.makeConstraints { make in
             make.centerY.equalTo(amount)
-            make.leading.equalTo(amount.snp.trailing).offset(Const.largeSpacing)
+            make.leading.equalTo(amount.snp.trailing)
         }
         
         progressStackView.snp.makeConstraints { make in
             make.height.centerY.equalTo(startStackView)
-            make.leading.equalTo(startStackView.snp.trailing)
+            make.leading.equalTo(startStackView.snp.trailing).offset(Const.miniSpacing)
             make.trailing.equalTo(self.safeAreaLayoutGuide).inset(Const.largeSpacing)
         }
         
@@ -111,7 +113,7 @@ extension RatingProgressView {
             let stackView = UIStackView().then { stackview in
                 stackview.axis = .horizontal
                 stackview.alignment = .center
-                stackview.spacing = 2
+//                stackview.spacing = 2
             }
 
             for j in 1..<6 {
@@ -119,7 +121,7 @@ extension RatingProgressView {
                 imageView.contentMode = .scaleToFill
                 let imgString = j > i ? "star.fill" : "star"
                 let imgColor: UIColor = j > i ? .starLight : .white
-                let image = UIImage(systemName: imgString)?.tinted(with: imgColor)?.resized(to: CGSize(width: 10, height: 10))
+                let image = UIImage(systemName: imgString)?.tinted(with: imgColor)?.resized(to: CGSize(width: 8, height: 8))
                 imageView.image = image
                 stackView.addArrangedSubview(imageView)
             }

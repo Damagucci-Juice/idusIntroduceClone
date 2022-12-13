@@ -13,7 +13,7 @@ final class ProgressBarView: UIView {
     private let backgroundView = UIView().then { view in
         view.backgroundColor = .progressBackground
         view.clipsToBounds = true
-        view.layer.cornerRadius = 2.5
+        view.layer.cornerRadius = 2
     }
     private let foregroundView = UIView().then { view in
         view.backgroundColor = .progressForeground
@@ -37,9 +37,10 @@ extension ProgressBarView {
         backgroundView.addSubview(foregroundView)
         
         backgroundView.snp.makeConstraints { make in
-            make.leading.trailing.equalToSuperview().inset(Const.miniSpacing)
+            make.leading.equalToSuperview()
+            make.trailing.equalToSuperview()
             make.centerY.equalToSuperview()
-            make.height.equalTo(Const.smallMediumSpacing)
+            make.height.equalTo(Const.miniSpacing)
         }
         
         foregroundView.snp.makeConstraints { make in
