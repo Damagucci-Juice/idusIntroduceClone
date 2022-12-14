@@ -43,7 +43,7 @@ final class RankView: UIView {
     }
     
     private let yearsOldLabel = UILabel().then { label in
-        label.font = .descriptionText
+        label.font = .ratingCount
         label.textColor = .secondaryLabel
         label.text = "Years Old"
     }
@@ -69,7 +69,7 @@ final class RankView: UIView {
     }
     
     private let chartSortLabel = UILabel().then { label in
-        label.font = .descriptionText
+        label.font = .ratingCount
         label.textColor = .secondaryLabel
     }
     
