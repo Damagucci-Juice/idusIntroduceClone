@@ -18,7 +18,7 @@ final class DefaultScrollDelegate: NSObject, UIScrollViewDelegate {
         let magicalSafeAreaTop: CGFloat = safeAreaTop + (vc.navigationController?.navigationBar.frame.height ?? 0)
         let offset: CGFloat = magicalSafeAreaTop + scrollView.contentOffset.y
         let alpha: CGFloat = 1 - (offset / safeAreaTop)
-        let reverseAlpha = (1 - alpha) / 1.2
+        let reverseAlpha = 1 - alpha
         
         vc.representView.alpha = alpha
         vc.inAppPurchaseLabel.alpha = reverseAlpha
