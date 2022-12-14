@@ -82,7 +82,11 @@ extension InformationView {
     }
     
     private func setupAttribute(_ appDetail: AppIntroduction) {
-        let first = ["Provider", "Size", "Category", "Compatibility", "Languages", "Age Rating", "In-App Purchases", "Copyright"]
+        let first = [
+            "Provider", "Size", "Category",
+            "Compatibility", "Languages", "Age Rating",
+            "In-App Purchases", "Copyright"
+        ]
         
         var version: String
         if appDetail.minimumOSVersion >= 14 {

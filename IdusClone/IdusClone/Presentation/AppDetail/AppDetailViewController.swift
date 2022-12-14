@@ -20,6 +20,11 @@ final class AppDetailViewController: UIViewController {
     
     lazy var representView = RepresentView(appDetail: appDetail)
     
+    lazy var rankView = RankView(ratingCount: appDetail.userRatingCount,
+                                 ratingAmount: appDetail.averagedUserRating,
+                                 recommandAge: appDetail.contentAdvisoryRating,
+                                 primaryGenre: appDetail.primaryGenreName)
+    
     private let reviewScrollView = UIScrollView().then { scrollView in
         scrollView.isPagingEnabled = true
         scrollView.showsHorizontalScrollIndicator = false
@@ -40,17 +45,10 @@ final class AppDetailViewController: UIViewController {
         label.font = .smallText
     }
     
-//    lazy var downloadButton = BasePaddingButton(primaryAction: .init(handler: { _ in
-//        print("GET! GET")
-//    })).then { button in
-//        button.setTitle("GET", for: .normal)
-//        button.setTitleColor(.white, for: .normal)
-//        button.backgroundColor = .tintColor
-//        button.layer.cornerRadius = button.intrinsicContentSize.height / 2
-//        button.clipsToBounds = true
-//        button.titleLabel?.font = .totalRating
-//    }
-    lazy var downloadButton = BasePaddingButton(padding: UIEdgeInsets(top: 2, left: 30, bottom: 2, right: 30)).then { button in
+    lazy var downloadButton = BasePaddingButton(padding: UIEdgeInsets(top: 2,
+                                                                      left: 30,
+                                                                      bottom: 2,
+                                                                      right: 30)).then { button in
         button.addAction(.init(handler: { _ in
             print("GET! GET")
         }), for: .touchUpInside)
@@ -114,7 +112,10 @@ extension AppDetailViewController {
     private func setupAddSubView() {
         view.addSubview(defaultScrollView)
         defaultScrollView.addSubview(contentView)
-        contentView.addSubviews([representView, ratingView, reviewScrollView, whatNewView, informationView])
+        contentView.addSubviews([
+            representView, rankView, ratingView,
+            reviewScrollView, whatNewView, informationView
+        ])
         reviewScrollView.addSubview(reviewScrollViewContainer)
     }
     
@@ -130,22 +131,28 @@ extension AppDetailViewController {
         
         representView.snp.makeConstraints { make in
             make.leading.top.trailing.equalTo(contentView)
-            make.height.equalTo(130)
+            make.height.equalTo(150)
         }
         
         uiFactory.makeDivider { divider in
             view.addSubview(divider)
             divider.snp.makeConstraints { make in
-                make.top.equalTo(representView.snp.bottom).offset(Const.xLargeSpacing)
+                make.top.equalTo(representView.snp.bottom)
                 make.leading.equalTo(contentView).offset(Const.largeSpacing)
                 make.trailing.equalTo(contentView).inset(Const.largeSpacing)
                 make.height.equalTo(Const.dividerHeight)
             }
         }
         
+        rankView.snp.makeConstraints { make in
+            make.leading.trailing.equalTo(contentView)
+            make.top.equalTo(representView.snp.bottom)
+            make.height.equalTo(100)
+        }
+        
         ratingView.snp.makeConstraints { make in
-            make.leading.trailing.equalTo(representView)
-            make.top.equalTo(representView.snp.bottom).offset(Const.mediumSpacing)
+            make.leading.trailing.equalToSuperview()
+            make.top.equalTo(rankView.snp.bottom)
             make.height.equalTo(165)
         }
         

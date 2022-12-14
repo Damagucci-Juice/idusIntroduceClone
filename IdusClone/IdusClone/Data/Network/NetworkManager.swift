@@ -29,7 +29,7 @@ final class NetworkManager {
                 if let responseDTO = try? decoder.decode(ResponseDTO.self, from: data) {
                     completionHandler(.success(responseDTO.results))
                 } else {
-                    print("fetch failed")
+                    print(String(data: data, encoding: .utf8)!)
                     completionHandler(.failure(.parsingError))
                 }
             }

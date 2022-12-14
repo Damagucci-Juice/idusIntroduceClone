@@ -25,7 +25,7 @@ final class FiveStarView: UIView {
     private let maxStartCount = 5
     private var intNumber: Int { Int(ratingAmount) }
     
-    private let stackView = UIStackView().then {
+    private var stackView = UIStackView().then {
         $0.axis = .horizontal
         $0.distribution = .equalSpacing
     }
@@ -33,12 +33,8 @@ final class FiveStarView: UIView {
     init(ratingAmount: Double, isContinues: Bool = false) {
         self.ratingAmount = ratingAmount
         self.isContinues = isContinues
-        super.init(frame: CGRect(x: 0, y: 0, width: .max, height: .max))
+        super.init(frame: CGRect(x: 0, y: 0, width: .zero, height: .zero))
         setupLayout()
-        self.addSubview(stackView)
-        stackView.snp.makeConstraints { make in
-            make.edges.equalToSuperview()
-        }
     }
     
     @available(*, unavailable)
@@ -50,16 +46,22 @@ final class FiveStarView: UIView {
         for i in 1..<maxStartCount + 1 {
             var amount: Double = i <= intNumber ? 1.0 : 0.0
             if i > intNumber && Double(i) <= ceil(ratingAmount) {
-               let temp = ratingAmount - Double(intNumber)
-                amount = round(temp * 10) / 10
+                amount = ratingAmount - Double(intNumber).roundUnder1()
             }
             let view = StarRatingView(ratingAmount: amount, color: highLightColor)
+            view.contentMode = .scaleAspectFit                  
             stackView.addArrangedSubview(view)
+        }
+        
+        self.addSubview(stackView)
+        stackView.snp.makeConstraints { make in
+            make.edges.equalToSuperview()
         }
     }
     private func prepareLayout() {
-        stackView.arrangedSubviews.forEach { view in
-            stackView.removeArrangedSubview(view)
+        self.stackView = UIStackView().then {
+            $0.axis = .horizontal
+            $0.distribution = .equalSpacing
         }
     }
 }

@@ -9,8 +9,10 @@ import UIKit
 import Then
 
 final class StarRatingView: UIView {
+    let width: CGFloat = Const.largeSpacing
     private let backgroundView = UIImageView()
-    private let foregroundView = UIImageView(image: UIImage(systemName: "star"))
+    private lazy var foregroundView = UIImageView(image: UIImage(systemName: "star")?
+        .resized(to: .init(width: self.width, height: self.width)))
     var ratingAmount: Double
     let color: UIColor
     
@@ -45,7 +47,10 @@ extension StarRatingView {
         let tintedImage = UIImage(systemName: "star.fill")?
             .tinted(with: color)?
             .drawRectangleOnImage(ratingAmount)
+            .resized(to: .init(width: self.width, height: self.width))
         backgroundView.image = tintedImage
         foregroundView.setImageColor(color: color)
+        backgroundView.contentMode = .scaleAspectFit
+        foregroundView.contentMode = .scaleAspectFit
     }
 }
