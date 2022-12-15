@@ -113,7 +113,6 @@ extension RatingProgressView {
             let stackView = UIStackView().then { stackview in
                 stackview.axis = .horizontal
                 stackview.alignment = .center
-//                stackview.spacing = 2
             }
 
             for j in 1..<6 {

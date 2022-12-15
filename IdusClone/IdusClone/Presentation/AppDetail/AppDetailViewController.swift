@@ -38,7 +38,6 @@ final class AppDetailViewController: UIViewController {
     private let appIntroductionLabel = UITextView().then { label in
         label.font = .descriptionText
         label.textColor = .label
-//        label.numberOfLines = 3
         label.isUserInteractionEnabled = false
         label.showsVerticalScrollIndicator = false
         label.sizeToFit()
@@ -79,8 +78,8 @@ final class AppDetailViewController: UIViewController {
     }
     
     lazy var downloadButton = BasePaddingButton().then { button in
-        button.addAction(.init(handler: { _ in
-            print("GET! GET")
+        button.addAction(.init(handler: { [unowned self] _ in
+            self.downloadApp()
         }), for: .touchUpInside)
         button.setTitle("GET", for: .normal)
         button.setTitleColor(.white, for: .normal)
@@ -322,14 +321,23 @@ extension AppDetailViewController {
                 print("represent shared tapped")
             }
             
-            self.representView.onDownload = {
-                //TODO: - Download 기능 추가
-                print("represent get tapped")
+            self.representView.onDownload = { [unowned self] in
+                downloadApp()
             }
             
             self.informationView.onWebTapped = { [unowned self]  in
                 UIApplication.shared.open(self.appDetail.sellerURL)
             }
         }
+    }
+}
+
+extension AppDetailViewController {
+    private func downloadApp() {
+        let alert = UIAlertController(title: "Download",
+                                      message: "해당 기능은 지원하지 않습니다.",
+                                      preferredStyle: .alert)
+        alert.addAction(UIAlertAction(title: "OK", style: .default))
+        self.present(alert, animated: true)
     }
 }
