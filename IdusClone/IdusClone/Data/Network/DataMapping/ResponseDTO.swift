@@ -102,6 +102,8 @@ extension ResultDTO {
                      formattedPrice: formattedPrice,
                      averagedUserRating: averageUserRating,
                      userRatingCount: userRatingCount,
-                     version: version)
+                     version: version,
+                     trackViewURL: URL(string: trackViewURL)!
+        )
     }
 }

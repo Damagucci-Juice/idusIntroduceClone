@@ -38,6 +38,7 @@ struct AppIntroduction: Equatable, Identifiable {
     let averagedUserRating: Double
     let userRatingCount: Int
     let version: String
+    let trackViewURL: URL
     
     var shortIntroduction: String {
         introduction.replacingOccurrences(of: "\n\n", with: "\n")
