@@ -245,9 +245,19 @@ extension AppDetailViewController {
             make.height.equalTo(appIntroductionLabel).dividedBy(3)
         }
         
+        uiFactory.makeDivider { divider in
+            contentView.addSubview(divider)
+            divider.snp.makeConstraints { make in
+                make.top.equalTo(appIntroductionLabel.snp.bottom).offset(Const.xLargeSpacing)
+                make.leading.equalTo(contentView).offset(Const.largeSpacing)
+                make.trailing.equalTo(contentView).inset(Const.largeSpacing)
+                make.height.equalTo(Const.dividerHeight)
+            }
+        }
+        
         ratingView.snp.makeConstraints { make in
             make.leading.trailing.equalToSuperview()
-            make.top.equalTo(appIntroductionLabel.snp.bottom)
+            make.top.equalTo(appIntroductionLabel.snp.bottom).offset(Const.xxxLargeSpacing)
             make.height.equalTo(165)
         }
         
@@ -343,9 +353,10 @@ extension AppDetailViewController {
     }
     
     func share(appName: String, sellerName: String, link: URL) {
-        let image = UIImage(systemName: "star")
-        let objectsToShare = [image, appName, sellerName, link] as [Any]
-        let activityVC = UIActivityViewController(activityItems: objectsToShare, applicationActivities: nil)
-        self.present(activityVC, animated: true, completion: nil)
+            let url = NSURL(fileURLWithPath: link.absoluteString)
+            let image = UIImage(systemName: "star") ?? UIImage()
+            let items = [image, appName, sellerName, url] as [Any]
+            let activityVC = UIActivityViewController(activityItems: items, applicationActivities: nil)
+            self.present(activityVC, animated: true, completion: nil)
     }
 }
