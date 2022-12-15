@@ -20,6 +20,16 @@ final class AppDetailViewController: UIViewController {
     
     lazy var representView = RepresentView(appDetail: appDetail)
     
+    private let sampleImageScrollView = UIScrollView().then { scrollView in
+        scrollView.isPagingEnabled = true
+        scrollView.showsHorizontalScrollIndicator = false
+    }
+
+    private let sampleImageContainer = UIStackView().then { stackView in
+        stackView.axis = .horizontal
+        stackView.spacing = Const.smallSpacing
+    }
+    
     lazy var rankView = RankView(ratingCount: appDetail.userRatingCount,
                                  ratingAmount: appDetail.averagedUserRating,
                                  recommandAge: appDetail.contentAdvisoryRating,
@@ -30,7 +40,7 @@ final class AppDetailViewController: UIViewController {
         scrollView.showsHorizontalScrollIndicator = false
     }
 
-    private let reviewScrollViewContainer = UIStackView().then { stackView in
+    private let reviewContainer = UIStackView().then { stackView in
         stackView.axis = .horizontal
         stackView.spacing = Const.smallSpacing
     }
@@ -45,17 +55,14 @@ final class AppDetailViewController: UIViewController {
         label.font = .smallText
     }
     
-    lazy var downloadButton = BasePaddingButton(padding: UIEdgeInsets(top: 2,
-                                                                      left: 30,
-                                                                      bottom: 2,
-                                                                      right: 30)).then { button in
+    lazy var downloadButton = BasePaddingButton().then { button in
         button.addAction(.init(handler: { _ in
             print("GET! GET")
         }), for: .touchUpInside)
         button.setTitle("GET", for: .normal)
         button.setTitleColor(.white, for: .normal)
         button.backgroundColor = .tintColor
-        button.layer.cornerRadius = 5
+        button.layer.cornerRadius = 17
         button.clipsToBounds = true
         button.titleLabel?.font = .totalRating
     }
@@ -67,6 +74,11 @@ final class AppDetailViewController: UIViewController {
                                                newDescription: appDetail.releaseNotes)
     
     private lazy var informationView = InformationView(appDetail: appDetail)
+    
+    private lazy var availableDeviceLabel = UIStackView().then { stackview in
+        stackview.axis = .horizontal
+        stackview.distribution = .fillProportionally
+    }
     
     private let appDetail: AppIntroduction
     
@@ -103,8 +115,14 @@ extension AppDetailViewController {
         imageView.layer.cornerRadius = navibarHeight / 7
         imageView.clipsToBounds = true
         imageView.contentMode = .scaleAspectFit
+        
         let labelButton = UIBarButtonItem(customView: inAppPurchaseLabel)
         let downButton = UIBarButtonItem(customView: downloadButton)
+        let currWidth = downButton.customView?.widthAnchor.constraint(equalToConstant: 75)
+        currWidth?.isActive = true
+        let currHeight = downButton.customView?.heightAnchor.constraint(equalToConstant: navibarHeight)
+        currHeight?.isActive = true
+        
         navigationItem.setRightBarButtonItems([downButton, labelButton], animated: false)
         navigationItem.titleView = imageView
     }
@@ -114,9 +132,11 @@ extension AppDetailViewController {
         defaultScrollView.addSubview(contentView)
         contentView.addSubviews([
             representView, rankView, ratingView,
-            reviewScrollView, whatNewView, informationView
+            reviewScrollView, whatNewView, informationView,
+            sampleImageScrollView, availableDeviceLabel
         ])
-        reviewScrollView.addSubview(reviewScrollViewContainer)
+        reviewScrollView.addSubview(reviewContainer)
+        sampleImageScrollView.addSubview(sampleImageContainer)
     }
     
     private func setupLayout() {
@@ -150,9 +170,40 @@ extension AppDetailViewController {
             make.height.equalTo(100)
         }
         
+        sampleImageScrollView.snp.makeConstraints { make in
+            make.leading.equalTo(contentView).offset(Const.mediumSpacing)
+            make.trailing.equalTo(contentView).inset(Const.mediumSpacing)
+            make.top.equalTo(rankView.snp.bottom)
+            make.height.equalTo(view.safeAreaLayoutGuide).multipliedBy(0.65)
+        }
+
+        sampleImageContainer.snp.makeConstraints { make in
+            make.edges.height.equalToSuperview()
+            make.width.equalToSuperview().priority(.low)
+        }
+        
+        appDetail.screenshotURLs.forEach { url in
+            let imageView = UIImageView(backgroundColor: .progressBackground)
+            imageView.contentMode = .scaleAspectFill
+            imageView.layer.cornerRadius = Const.largeSpacing
+            imageView.clipsToBounds = true
+            imageView.load(url: url)
+            sampleImageContainer.addArrangedSubview(imageView)
+            
+            // 세로 이미지 레이아웃 모드
+            imageView.snp.makeConstraints { make in
+                make.width.equalTo(self.view.safeAreaLayoutGuide).multipliedBy(0.55)
+            }
+        }
+        
+        availableDeviceLabel.snp.makeConstraints { make in
+            make.leading.equalToSuperview().offset(Const.xLargeSpacing)
+            make.top.equalTo(sampleImageScrollView.snp.bottom).offset(Const.mediumSpacing)
+        }
+        
         ratingView.snp.makeConstraints { make in
             make.leading.trailing.equalToSuperview()
-            make.top.equalTo(rankView.snp.bottom)
+            make.top.equalTo(availableDeviceLabel.snp.bottom)
             make.height.equalTo(165)
         }
         
@@ -163,14 +214,13 @@ extension AppDetailViewController {
             make.height.equalTo(200)
         }
 
-        reviewScrollViewContainer.snp.makeConstraints { make in
-            make.top.bottom.equalTo(reviewScrollView)
-            make.leading.equalToSuperview()
-            make.trailing.equalToSuperview()
+        reviewContainer.snp.makeConstraints { make in
+            make.edges.height.equalToSuperview()
+            make.width.equalToSuperview().priority(.low)
         }
         
         uiFactory.makeReviewCard().forEach { view in
-            reviewScrollViewContainer.addArrangedSubview(view)
+            reviewContainer.addArrangedSubview(view)
             view.snp.makeConstraints { make in
                 make.width.equalTo(self.view.safeAreaLayoutGuide).inset(Const.largeSpacing)
                 make.height.equalTo(reviewScrollView)
@@ -204,6 +254,18 @@ extension AppDetailViewController {
         view.backgroundColor = .white
         self.defaultScrollView.delegate = defaultScrollDelegate
         defaultScrollDelegate.vc = self
+        
+        // MARK: - AvailableStackView 생성
+        if !appDetail.screenshotURLs.isEmpty {
+            let label = UILabel().then { label in
+                label.text = "iPhone"
+                label.font = .fogText
+                label.textColor = .lightGray
+            }
+            let image = UIImage(systemName: "iphone")?.tinted(with: .lightGray)
+            let imageView = UIImageView(image: image)
+            availableDeviceLabel.addArrangedSubviews([imageView, label])
+        }
     }
     
     private func setupBinding() {
@@ -216,6 +278,10 @@ extension AppDetailViewController {
             self.representView.onDownload = {
                 //TODO: - Download 기능 추가
                 print("represent get tapped")
+            }
+            
+            self.informationView.onWebTapped = { [unowned self]  in
+                UIApplication.shared.open(self.appDetail.sellerURL)
             }
         }
     }

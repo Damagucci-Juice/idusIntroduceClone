@@ -9,12 +9,16 @@ import Foundation
 import UIKit.UIImageView
 
 extension UIImageView {
-    func load(url: URL) {
+    func load(url: URL, size: CGSize? = nil) {
         DispatchQueue.global().async { [weak self] in
             if let data = try? Data(contentsOf: url) {
                 if let image = UIImage(data: data) {
                     DispatchQueue.main.async {
-                        self?.image = image
+                        if let size = size {
+                            self?.image = image.resized(to: size)
+                        } else {
+                            self?.image = image
+                        }
                     }
                 }
             }
