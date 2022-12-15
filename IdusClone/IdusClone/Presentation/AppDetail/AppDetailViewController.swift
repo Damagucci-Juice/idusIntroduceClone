@@ -35,6 +35,29 @@ final class AppDetailViewController: UIViewController {
                                  recommandAge: appDetail.contentAdvisoryRating,
                                  primaryGenre: appDetail.primaryGenreName)
     
+    private let appIntroductionLabel = UITextView().then { label in
+        label.font = .descriptionText
+        label.textColor = .label
+//        label.numberOfLines = 3
+        label.isUserInteractionEnabled = false
+        label.showsVerticalScrollIndicator = false
+        label.sizeToFit()
+    }
+    
+    private lazy var moreIntroductionButton = UIButton().then { button in
+        button.addAction(UIAction(handler: { [unowned self] _ in
+            DispatchQueue.main.async {
+                self.appIntroductionLabel.text = self.appDetail.introduction
+                self.appIntroductionLabel.snp.updateConstraints { make in
+                    make.height.equalTo(1100)
+                }
+                button.removeFromSuperview()
+            }
+        }), for: .touchUpInside)
+        button.setTitle("more", for: .normal)
+        button.setTitleColor(.tintColor, for: .normal)
+    }
+    
     private let reviewScrollView = UIScrollView().then { scrollView in
         scrollView.isPagingEnabled = true
         scrollView.showsHorizontalScrollIndicator = false
@@ -133,7 +156,8 @@ extension AppDetailViewController {
         contentView.addSubviews([
             representView, rankView, ratingView,
             reviewScrollView, whatNewView, informationView,
-            sampleImageScrollView, availableDeviceLabel
+            sampleImageScrollView, availableDeviceLabel, appIntroductionLabel,
+            moreIntroductionButton
         ])
         reviewScrollView.addSubview(reviewContainer)
         sampleImageScrollView.addSubview(sampleImageContainer)
@@ -201,9 +225,30 @@ extension AppDetailViewController {
             make.top.equalTo(sampleImageScrollView.snp.bottom).offset(Const.mediumSpacing)
         }
         
+        uiFactory.makeDivider { divider in
+            view.addSubview(divider)
+            divider.snp.makeConstraints { make in
+                make.top.equalTo(availableDeviceLabel.snp.bottom).offset(Const.xLargeSpacing)
+                make.leading.equalTo(contentView).offset(Const.largeSpacing)
+                make.trailing.equalTo(contentView).inset(Const.largeSpacing)
+                make.height.equalTo(Const.dividerHeight)
+            }
+        }
+        
+        appIntroductionLabel.snp.makeConstraints { make in
+            make.leading.trailing.equalToSuperview().inset(Const.largeSpacing)
+            make.top.equalTo(availableDeviceLabel.snp.bottom).offset(Const.xxxLargeSpacing)
+            make.height.equalTo(63)
+        }
+        
+        moreIntroductionButton.snp.makeConstraints { make in
+            make.trailing.bottom.equalTo(appIntroductionLabel)
+            make.height.equalTo(appIntroductionLabel).dividedBy(3)
+        }
+        
         ratingView.snp.makeConstraints { make in
             make.leading.trailing.equalToSuperview()
-            make.top.equalTo(availableDeviceLabel.snp.bottom)
+            make.top.equalTo(appIntroductionLabel.snp.bottom)
             make.height.equalTo(165)
         }
         
@@ -252,7 +297,7 @@ extension AppDetailViewController {
     
     private func setupAttribute() {
         view.backgroundColor = .white
-        self.defaultScrollView.delegate = defaultScrollDelegate
+        defaultScrollView.delegate = defaultScrollDelegate
         defaultScrollDelegate.vc = self
         
         // MARK: - AvailableStackView 생성
@@ -266,6 +311,8 @@ extension AppDetailViewController {
             let imageView = UIImageView(image: image)
             availableDeviceLabel.addArrangedSubviews([imageView, label])
         }
+        appIntroductionLabel.text = appDetail.shortIntroduction
+        moreIntroductionButton.backgroundColor = .white
     }
     
     private func setupBinding() {
