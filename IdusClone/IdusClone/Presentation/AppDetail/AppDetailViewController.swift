@@ -24,7 +24,7 @@ final class AppDetailViewController: UIViewController {
         scrollView.isPagingEnabled = true
         scrollView.showsHorizontalScrollIndicator = false
     }
-
+    
     private let sampleImageContainer = UIStackView().then { stackView in
         stackView.axis = .horizontal
         stackView.spacing = Const.smallSpacing
@@ -61,12 +61,12 @@ final class AppDetailViewController: UIViewController {
         scrollView.isPagingEnabled = true
         scrollView.showsHorizontalScrollIndicator = false
     }
-
+    
     private let reviewContainer = UIStackView().then { stackView in
         stackView.axis = .horizontal
         stackView.spacing = Const.smallSpacing
     }
-        
+    
     let inAppPurchaseLabel = UILabel().then { label in
         label.numberOfLines = 2
         label.textAlignment = .left
@@ -199,7 +199,7 @@ extension AppDetailViewController {
             make.top.equalTo(rankView.snp.bottom)
             make.height.equalTo(view.safeAreaLayoutGuide).multipliedBy(0.65)
         }
-
+        
         sampleImageContainer.snp.makeConstraints { make in
             make.edges.height.equalToSuperview()
             make.width.equalToSuperview().priority(.low)
@@ -257,7 +257,7 @@ extension AppDetailViewController {
             make.top.equalTo(ratingView.snp.bottom)
             make.height.equalTo(200)
         }
-
+        
         reviewContainer.snp.makeConstraints { make in
             make.edges.height.equalToSuperview()
             make.width.equalToSuperview().priority(.low)
@@ -270,7 +270,7 @@ extension AppDetailViewController {
                 make.height.equalTo(reviewScrollView)
             }
         }
-
+        
         uiFactory.makeDivider { divider in
             view.addSubview(divider)
             divider.snp.makeConstraints { make in
@@ -280,7 +280,7 @@ extension AppDetailViewController {
                 make.height.equalTo(Const.dividerHeight)
             }
         }
-
+        
         whatNewView.snp.makeConstraints { make in
             make.leading.trailing.equalToSuperview()
             make.top.equalTo(reviewScrollView.snp.bottom).offset(Const.largeSpacing)
@@ -316,9 +316,10 @@ extension AppDetailViewController {
     
     private func setupBinding() {
         Task {
-            self.representView.onShared = {
-                //TODO: - share 기능 추가
-                print("represent shared tapped")
+            self.representView.onShared = { [unowned self] in
+                share(appName: appDetail.appName,
+                      sellerName: appDetail.sellerName,
+                      link: appDetail.trackViewURL)
             }
             
             self.representView.onDownload = { [unowned self] in
@@ -339,5 +340,12 @@ extension AppDetailViewController {
                                       preferredStyle: .alert)
         alert.addAction(UIAlertAction(title: "OK", style: .default))
         self.present(alert, animated: true)
+    }
+    
+    func share(appName: String, sellerName: String, link: URL) {
+        let image = UIImage(systemName: "star")
+        let objectsToShare = [image, appName, sellerName, link] as [Any]
+        let activityVC = UIActivityViewController(activityItems: objectsToShare, applicationActivities: nil)
+        self.present(activityVC, animated: true, completion: nil)
     }
 }
