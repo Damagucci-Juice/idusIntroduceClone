@@ -16,6 +16,10 @@ final class InformationView: UIView {
     
     private var data: [(String, String)] = []
     
+    private var tappableData: [(String, String)] = []
+    
+    var onWebTapped: () -> Void = { }
+    
     private let title = UILabel().then { label in
         label.text = "Information"
         label.font = .mediumTitle
@@ -41,6 +45,9 @@ final class InformationView: UIView {
         fatalError("init(coder:) has not been implemented")
     }
     
+    @objc func handleWebTap(_  sender: UITapGestureRecognizer) {
+        onWebTapped()
+    }
 }
 
 extension InformationView {
@@ -67,21 +74,24 @@ extension InformationView {
             make.leading.trailing.equalToSuperview().inset(Const.largeSpacing)
             make.bottom.equalToSuperview()
         }
-        data.forEach { (key, value) in
+        data.forEach { key, value in
             uiFactory.makeInfoRow(key, value) { stackView in
-                self.stackView.addArrangedSubview(stackView)
-                uiFactory.makeDivider { divider in
-                    self.stackView.addArrangedSubview(divider)
-                    divider.snp.makeConstraints { make in
-                        make.leading.trailing.equalToSuperview()
-                        make.height.equalTo(Const.dividerHeight)
-                    }
-                }
+                addInfomationRow(stackView)
+            }
+        }
+        
+        tappableData.forEach { key, value in
+            let tap = UITapGestureRecognizer(target: self, action: #selector(handleWebTap))
+            uiFactory.makeTappableInfoRow(key, value) { stackView in
+                stackView.addGestureRecognizer(tap)
+                stackView.isUserInteractionEnabled = true
+                addInfomationRow(stackView)
             }
         }
     }
     
     private func setupAttribute(_ appDetail: AppIntroduction) {
+        //MARK: - untappable data
         let first = [
             "Provider", "Size", "Category",
             "Compatibility", "Languages", "Age Rating",
@@ -111,6 +121,32 @@ extension InformationView {
         ]
         for (index, key) in first.enumerated() {
             data.append((key, second[index]))
+        }
+        
+        //MARK: - Tappable Data
+        let tappableFirst = [
+            "Delvelopeer Website"
+        ]
+        
+        let tappableSecond = [
+            "safari"
+        ]
+        
+        for (index, key) in tappableFirst.enumerated() {
+            tappableData.append((key, tappableSecond[index]))
+        }
+    }
+}
+
+extension InformationView {
+    private func addInfomationRow(_ stackView: UIStackView) {
+        self.stackView.addArrangedSubview(stackView)
+        uiFactory.makeDivider { divider in
+            self.stackView.addArrangedSubview(divider)
+            divider.snp.makeConstraints { make in
+                make.leading.trailing.equalToSuperview()
+                make.height.equalTo(Const.dividerHeight)
+            }
         }
     }
 }

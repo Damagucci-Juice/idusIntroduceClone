@@ -36,14 +36,29 @@ struct UIFactory {
             label.textColor = .label
             label.textAlignment = .right
         }
-        
         let stackView = UIStackView().then { stackview in
             stackview.axis = .horizontal
             stackview.alignment = .center
         }
-        
         stackView.addArrangedSubviews([preLabel, postLabel])
-        
+        completion(stackView)
+    }
+    
+    func makeTappableInfoRow(_ key: String, _ imageString: String, _ completion: (UIStackView) -> Void) {
+        let preLabel = UILabel().then { label in
+            label.text = key
+            label.font = .descriptionText
+            label.textColor = .tintColor
+        }
+        let imageView = UIImageView().then { imageView in
+            let image = UIImage(systemName: imageString)?.resized(to: .init(width: 20, height: 20))
+            imageView.image = image?.tinted(with: .tintColor)
+        }
+        let stackView = UIStackView().then { stackview in
+            stackview.axis = .horizontal
+            stackview.alignment = .center
+        }
+        stackView.addArrangedSubviews([preLabel, imageView])
         completion(stackView)
     }
 }

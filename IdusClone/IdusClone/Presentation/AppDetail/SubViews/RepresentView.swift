@@ -15,7 +15,6 @@ final class RepresentView: UIView {
     var onShared: () -> Void = { }
     
     private let imageView = UIImageView().then { imageView in
-        imageView.frame = CGRect(x: 0, y: 0, width: .zero, height: .zero)
         imageView.clipsToBounds = true
     }
     
