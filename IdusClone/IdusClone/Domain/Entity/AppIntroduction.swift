@@ -24,7 +24,7 @@ struct AppIntroduction: Equatable, Identifiable {
     let artistName: String
     let genres: [String]
     let price: Double
-    let resultDescription: String
+    let introduction: String
     let primaryGenreName: String
     let primaryGenreID: Int
     let currentVersionReleaseDate: Date
@@ -38,4 +38,8 @@ struct AppIntroduction: Equatable, Identifiable {
     let averagedUserRating: Double
     let userRatingCount: Int
     let version: String
+    
+    var shortIntroduction: String {
+        introduction.replacingOccurrences(of: "\n\n", with: "\n")
+    }
 }

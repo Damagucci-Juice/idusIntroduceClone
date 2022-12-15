@@ -89,7 +89,7 @@ extension ResultDTO {
                      artistName: artistName,
                      genres: genres,
                      price: price,
-                     resultDescription: resultDescription,
+                     introduction: resultDescription,
                      primaryGenreName: primaryGenreName,
                      primaryGenreID: primaryGenreID,
                      currentVersionReleaseDate: currentVersionReleaseDate,
