@@ -121,7 +121,7 @@ extension RankView {
         
         ratingStackView.snp.makeConstraints { make in
             make.top.equalToSuperview().offset(Const.largeSpacing)
-            make.leading.equalToSuperview().offset(Const.xxxLargeSpacing)
+            make.leading.equalToSuperview().offset(Const.xxLargeSpacing)
             make.height.equalTo(ageStackView)
         }
         
@@ -157,7 +157,7 @@ extension RankView {
         
         chartStackView.snp.makeConstraints { make in
             make.top.equalTo(ratingStackView)
-            make.trailing.equalToSuperview().inset(Const.xxxLargeSpacing)
+            make.trailing.equalToSuperview().inset(Const.xxLargeSpacing)
         }
         
         chartSortLabel.snp.makeConstraints { make in
