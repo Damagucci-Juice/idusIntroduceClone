@@ -34,7 +34,7 @@ struct ResultDTO: Codable {
     let genreIDS: [String]
     let currentVersionReleaseDate: Date
     let contentAdvisoryRating, minimumOSVersion, trackCensoredName: String
-    let languageCodesISO2A: [LanguageCode]
+    let languageCodesISO2A: [String]
     let fileSizeBytes: String
     let sellerURL: String
     let formattedPrice: String
@@ -100,7 +100,7 @@ extension ResultDTO {
                      fileSizeBytes: fileSizeMB,
                      sellerURL: URL(string: sellerURL)!,
                      formattedPrice: formattedPrice,
-                     averagedUserRating: averageUserRating,
+                     averagedUserRating: averageUserRating.roundUnder1(),
                      userRatingCount: userRatingCount,
                      version: version,
                      trackViewURL: URL(string: trackViewURL)!

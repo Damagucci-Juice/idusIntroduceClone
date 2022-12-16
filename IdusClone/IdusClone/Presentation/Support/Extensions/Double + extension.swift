@@ -11,4 +11,8 @@ extension Double {
     func roundUnder1() -> Double {
         return (self * 10).rounded() / 10
     }
+    
+    func roundUnder1WithoutZero() -> String {
+        roundUnder1() == Double(Int(self)) ? String(Int(self)) : String(roundUnder1())
+    }
 }

@@ -8,10 +8,10 @@
 import UIKit
 
 final class BasePaddingButton: UIButton {
-    private var padding = UIEdgeInsets(top: Const.minimumSpacing,
-                                       left: Const.xxxLargeSpacing,
-                                       bottom: Const.minimumSpacing,
-                                       right: Const.xxxLargeSpacing)
+    private var padding = UIEdgeInsets(top: -2,
+                                       left: Const.xLargeSpacing,
+                                       bottom: -2,
+                                       right: Const.xLargeSpacing)
 
     convenience init(padding: UIEdgeInsets) {
         self.init()

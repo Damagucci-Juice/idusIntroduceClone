@@ -27,7 +27,7 @@ final class FiveStarView: UIView {
     
     private var stackView = UIStackView().then {
         $0.axis = .horizontal
-        $0.distribution = .equalSpacing
+        $0.distribution = .fillEqually
     }
     
     init(ratingAmount: Double, isContinues: Bool = false) {
@@ -59,9 +59,8 @@ final class FiveStarView: UIView {
         }
     }
     private func prepareLayout() {
-        self.stackView = UIStackView().then {
-            $0.axis = .horizontal
-            $0.distribution = .equalSpacing
+        stackView.subviews.forEach { view in
+            view.removeFromSuperview()
         }
     }
 }
