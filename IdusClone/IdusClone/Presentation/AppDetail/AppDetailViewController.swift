@@ -30,7 +30,7 @@ final class AppDetailViewController: UIViewController {
         stackView.spacing = Const.smallSpacing
     }
     
-    lazy var rankView = RankView(ratingCount: appDetail.userRatingCount,
+    lazy var rankView = RankView(ratingCount: appDetail.userRatingCountString,
                                  ratingAmount: appDetail.averagedUserRating,
                                  recommandAge: appDetail.contentAdvisoryRating,
                                  primaryGenre: appDetail.primaryGenreName)
@@ -129,23 +129,24 @@ final class AppDetailViewController: UIViewController {
 extension AppDetailViewController {
     
     private func setupNavBar() {
-        let beutifulMagicNumber: CGFloat = 10
+        let beutifulMagicNumber: CGFloat = 70
         let navibarHeight = (navigationController?.navigationBar.frame.height ?? 0) - beutifulMagicNumber
         let imageView = UIImageView()
         imageView.load(url: appDetail.artworkULR60)
         imageView.frame = CGRect(x: 0, y: 0, width: navibarHeight, height: navibarHeight)
-        imageView.layer.cornerRadius = navibarHeight / 7
+        imageView.layer.cornerRadius = 10
         imageView.clipsToBounds = true
         imageView.contentMode = .scaleAspectFit
         
         let labelButton = UIBarButtonItem(customView: inAppPurchaseLabel)
         let downButton = UIBarButtonItem(customView: downloadButton)
-        let currWidth = downButton.customView?.widthAnchor.constraint(equalToConstant: 75)
+        let currWidth = downButton.customView?.widthAnchor.constraint(equalToConstant: beutifulMagicNumber)
         currWidth?.isActive = true
         let currHeight = downButton.customView?.heightAnchor.constraint(equalToConstant: navibarHeight)
         currHeight?.isActive = true
         
         navigationItem.setRightBarButtonItems([downButton, labelButton], animated: false)
+        navigationController?.navigationBar.prefersLargeTitles = false
         navigationItem.titleView = imageView
     }
     

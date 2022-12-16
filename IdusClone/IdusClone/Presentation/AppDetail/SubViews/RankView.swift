@@ -43,7 +43,7 @@ final class RankView: UIView {
     }
     
     private let yearsOldLabel = UILabel().then { label in
-        label.font = .ratingCount
+        label.font = .smallText
         label.textColor = .secondaryLabel
         label.text = "Years Old"
     }
@@ -69,7 +69,7 @@ final class RankView: UIView {
     }
     
     private let chartSortLabel = UILabel().then { label in
-        label.font = .ratingCount
+        label.font = .smallText
         label.textColor = .secondaryLabel
     }
     
@@ -80,10 +80,10 @@ final class RankView: UIView {
         stackView.distribution = .fillProportionally
     }
     
-    init(ratingCount: Int, ratingAmount: Double, recommandAge: String, rankNumber: Int = 30, primaryGenre: String) {
+    init(ratingCount: String, ratingAmount: Double, recommandAge: String, rankNumber: Int = 30, primaryGenre: String) {
         super.init(frame: .zero)
-        let roundedRating = ratingAmount.roundUnder1()
-        self.ratingCountLabel.text = "\(ratingCount) RATINGS"
+        let roundedRating = ratingAmount
+        self.ratingCountLabel.text = ratingCount + " RATINGS"
         self.ratingAmountLabel.text = "\(roundedRating)"
         self.fiveStarRatingView.ratingAmount = roundedRating
         self.ageAmountLabel.text = recommandAge
@@ -105,15 +105,15 @@ extension RankView {
     private func setupAddSubview() {
         ratingStackView.addArrangedSubviews([ratingCountLabel, ratingAmountLabel, fiveStarRatingView])
         ageStackView.addArrangedSubviews([ageLabel, ageAmountLabel, yearsOldLabel])
-        chartStackView.addArrangedSubviews([chartLabel, chartNumberLabel, chartSortLabel])
-        self.addSubviews([ratingStackView, ageStackView, chartStackView])
+        chartStackView.addArrangedSubviews([chartLabel, chartNumberLabel])
+        self.addSubviews([ratingStackView, ageStackView, chartStackView, chartSortLabel])
     }
     private func setupAttribute() {
         //MARK: - Chart Number Label attributedString 편집
         let fullText = chartNumberLabel.text ?? ""
         let attribtuedString = NSMutableAttributedString(string: fullText)
         let range = (fullText as NSString).range(of: "No.")
-        attribtuedString.addAttributes([.font: UIFont(name: "SFProRounded-Regular", size: 16)], range: range)
+        attribtuedString.addAttributes([.font: UIFont.miniRoundedText as Any], range: range)
         chartNumberLabel.attributedText = attribtuedString
     }
     private func setupLayout() {
@@ -122,7 +122,7 @@ extension RankView {
         ratingStackView.snp.makeConstraints { make in
             make.top.equalToSuperview().offset(Const.largeSpacing)
             make.leading.equalToSuperview().offset(Const.xxxLargeSpacing)
-            make.height.equalTo(chartStackView)
+            make.height.equalTo(ageStackView)
         }
         
         fiveStarRatingView.snp.makeConstraints { make in
@@ -143,7 +143,6 @@ extension RankView {
         ageStackView.snp.makeConstraints { make in
             make.centerY.top.equalTo(ratingStackView)
             make.centerX.equalToSuperview()
-            make.height.equalTo(chartStackView)
         }
         
         uiFactory.makeDivider { divider in
@@ -159,6 +158,11 @@ extension RankView {
         chartStackView.snp.makeConstraints { make in
             make.top.equalTo(ratingStackView)
             make.trailing.equalToSuperview().inset(Const.xxxLargeSpacing)
+        }
+        
+        chartSortLabel.snp.makeConstraints { make in
+            make.centerY.equalTo(yearsOldLabel)
+            make.centerX.equalTo(chartStackView)
         }
     }
 }

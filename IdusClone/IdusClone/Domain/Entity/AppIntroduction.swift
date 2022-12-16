@@ -43,4 +43,17 @@ struct AppIntroduction: Equatable, Identifiable {
     var shortIntroduction: String {
         introduction.replacingOccurrences(of: "\n\n", with: "\n")
     }
+    
+    var userRatingCountString: String {
+        switch userRatingCount {
+        case 0..<1000:
+            return "\(userRatingCount)"
+        case 1000..<1_000_000:
+            return "\(Double(userRatingCount / 1000).roundUnder1WithoutZero())K"
+        default:
+            return "\(Double(userRatingCount / 1_000_000).roundUnder1WithoutZero())M"
+        }
+    }
 }
+
+
